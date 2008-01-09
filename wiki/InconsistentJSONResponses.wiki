@@ -1,7 +1,6 @@
 #summary Documentation of inconsistent JSON responses from RTM
-=Inconsistent JSON Responses=
 
-== tags ==
+=== tags ===
 If there are no tags associated with a task, an empty JSON array is returned: `"tags":[]`
 
 If there is just one tag associtated with a task, a JSON object is returned: `"tags":{"tag":"onetag"}`

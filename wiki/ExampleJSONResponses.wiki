@@ -2,4 +2,19 @@
 
 *rtm.lists.getList*
 
-`{"rsp":{"stat":"ok","lists":{"list":[{"id":"530602","name":"Inbox","deleted":"0","locked":"1","archived":"0","position":"-1","smart":"0","sort_order":"0"},{"id":"835870","name":"School","deleted":"0","locked":"0","archived":"0","position":"0","smart":"0","sort_order":"0"},{"id":"838139","name":"Shopping","deleted":"0","locked":"0","archived":"0","position":"0","smart":"0","sort_order":"0"},{"id":"530606","name":"Sent","deleted":"0","locked":"1","archived":"0","position":"1","smart":"0","sort_order":"0"}]}}} `
+{{{
+{"rsp":{"stat":"ok","lists":{"list":[{"id":"530602","name":"Inbox","deleted":"0","locked":"1",
+"archived":"0","position":"-1","smart":"0","sort_order":"0"},{"id":"835870","name":"School",
+"deleted":"0","locked":"0","archived":"0","position":"0","smart":"0","sort_order":"0"},
+{"id":"838139","name":"Shopping","deleted":"0","locked":"0","archived":"0","position":"0",
+"smart":"0","sort_order":"0"},{"id":"530606","name":"Sent","deleted":"0","locked":"1",
+"archived":"0","position":"1","smart":"0","sort_order":"0"}]}}} 
+}}}
+
+*rtm.lists.delete*
+
+{{{
+{"rsp":{"stat":"ok","transaction":{"id":"829976404","undoable":"1"},"list":{"id":"2346361",
+"name":"incomplete","deleted":"1","locked":"0","archived":"0","position":"0","smart":"1",
+"sort_order":"0","filter":"(status:incomplete)"}}}
+}}}

@@ -1,8 +1,8 @@
 #summary Documentation of inconsistent JSON responses from RTM
 
 === tags ===
-* If there are no tags associated with a task, an empty JSON array is returned: `"tags":[]`
+  * If there are no tags associated with a task, an empty JSON array is returned: `"tags":[]`
 
-* If there is just one tag associtated with a task, a JSON object is returned: `"tags":{"tag":"onetag"}`
+  * If there is just one tag associtated with a task, a JSON object is returned: `"tags":{"tag":"onetag"}`
 
-* If there are multiple tags associated with a task, a JSON object is returned with a JSON array inside: `"tags":{"tag":["second","testtag"]}` 
+  * If there are multiple tags associated with a task, a JSON object is returned with a JSON array inside: `"tags":{"tag":["second","testtag"]}` 

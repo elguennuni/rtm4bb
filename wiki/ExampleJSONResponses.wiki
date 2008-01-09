@@ -18,6 +18,15 @@
 "archived":"0","position":"1","smart":"0","sort_order":"0"}]}}} 
 }}}
 
+*rtm.lists.add*
+   * NOTE: `filter` is only returned when the list is a smart list
+
+{{{
+{"rsp":{"stat":"ok","transaction":{"id":"835300997","undoable":"0"},"list":{"id":"2346752",
+"name":"Completed List","deleted":"0","locked":"0","archived":"0","position":"0",
+"smart":"1","sort_order":"0","filter":"status:completed"}}}
+}}}
+
 *rtm.lists.delete*
   * NOTE: `filter` is only returned when the list is a smart list
 

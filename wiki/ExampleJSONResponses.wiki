@@ -44,3 +44,14 @@
 "name":"incomplete","deleted":"1","locked":"0","archived":"1","position":"0","smart":"1",
 "sort_order":"0","filter":"(status:incomplete)"}}}
 }}}
+
+*rtm.tasks.add*
+
+{{{
+{"rsp":{"stat":"ok","transaction":{"id":"851965798","undoable":"0"},"list":{"id":"835870",
+"taskseries":{"id":"9087179","created":"2008-01-09T13:10:42Z","modified":"2008-01-09T13:10:42Z",
+"name":"Jason was here","source":"api","url":"","location_id":"","tags":[],
+"participants":[],"notes":[],"task":{"id":"13472979","due":"2008-01-10T05:00:00Z",
+"has_due_time":"0","added":"2008-01-09T13:10:42Z","completed":"","deleted":"","priority":"N",
+"postponed":"0","estimate":""}}}}}
+}}}

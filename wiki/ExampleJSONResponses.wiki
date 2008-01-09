@@ -1,11 +1,13 @@
 #summary Example JSON responses from the RTM API
 
+==rtm.transactions==
 *rtm.transactions.undo*
 
 {{{
 {"rsp":{"stat":"ok"}}
 }}}
 
+==rtm.lists==
 *rtm.lists.getList*
   * NOTE: `filter` is only returned when the list is a smart list
 
@@ -45,6 +47,7 @@
 "sort_order":"0","filter":"(status:incomplete)"}}}
 }}}
 
+==rtm.tasks==
 *rtm.tasks.add*
 
 {{{

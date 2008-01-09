@@ -6,3 +6,10 @@
   * If there is just one tag associtated with a task, a JSON object is returned: `"tags":{"tag":"onetag"}`
 
   * If there are multiple tags associated with a task, a JSON object is returned with a JSON array inside: `"tags":{"tag":["second","testtag"]}` 
+
+=== participants ===
+  * if there are no contacts associated with a task, an empty JSON array is returned: `"participants":[]`
+  
+  * if there is one contact associated with a task, a single JSON object is returned: `"participants":{"contact":{"id":"472772","fullname":"Jason Emerick","username":"bbrtm"}}`
+  
+  * if there are more than one contacts associated with a task a JSON object is returned withe a JSON array of contacts: `"participants":{"contact":[{"id":"327108","fullname":"Jorge Tasks","username":"dmd1272"},{"id":"472772","fullname":"BBRTM Emerick","username":"bbrtm"}]}`

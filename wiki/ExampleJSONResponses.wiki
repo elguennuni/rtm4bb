@@ -18,3 +18,11 @@
 "name":"incomplete","deleted":"1","locked":"0","archived":"0","position":"0","smart":"1",
 "sort_order":"0","filter":"(status:incomplete)"}}}
 }}}
+
+*rtm.lists.archive*
+
+{{{
+{"rsp":{"stat":"ok","transaction":{"id":"831423147","undoable":"1"},"list":{"id":"2346361",
+"name":"incomplete","deleted":"1","locked":"0","archived":"1","position":"0","smart":"1",
+"sort_order":"0","filter":"(status:incomplete)"}}}
+}}}

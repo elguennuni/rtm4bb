@@ -73,3 +73,9 @@
 {{{
 {"rsp":{"stat":"ok","transaction":{"id":"901169813","undoable":"0"},"note":{"id":"1162644","created":"2008-01-09T20:54:52Z","modified":"2008-01-09T20:55:12Z","title":"a new title","$t":"a new body text"}}}
 }}}
+
+*rtm.tasks.notes.delete*
+
+{{{
+{"rsp":{"stat":"ok","transaction":{"id":"901380484","undoable":"1"}}}
+}}}

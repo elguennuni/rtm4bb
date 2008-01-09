@@ -1,5 +1,11 @@
 #summary Example JSON responses from the RTM API
 
+*rtm.transactions.undo*
+
+{{{
+{"rsp":{"stat":"ok"}}
+}}}
+
 *rtm.lists.getList*
   * NOTE: `filter` is only returned when the list is a smart list
 

@@ -58,3 +58,12 @@
 "has_due_time":"0","added":"2008-01-09T13:10:42Z","completed":"","deleted":"","priority":"N",
 "postponed":"0","estimate":""}}}}}
 }}}
+
+==rtm.tasks.notes==
+*rtm.tasks.notes.add*
+
+{{{
+{"rsp":{"stat":"ok","transaction":{"id":"899890895","undoable":"0"},"note":{"id":"1162593",
+"created":"2008-01-09T20:42:55Z","modified":"2008-01-09T20:42:55Z","title":"note title here",
+"$t":"a really long note"}}}
+}}}

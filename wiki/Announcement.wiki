@@ -1,3 +1,5 @@
+#summary Official Announcement
+
 *Introduction*
 
 First I would like to introduce myself.  My name is Jason Emerick.  I am a senior at Virginia Tech studying Computer Engineering and a minor in Computer Science.  I am not quite sure when I started using the Remember the Milk but it has been a while I’m sure.  I use it mainly to manage my school work as well as other little things that may pop up and my shopping list.  About six months ago, I got my BlackBerry 8830 and love it just as much as Remember the Milk.  I have been using the mobile web interface to Remember the Milk, which is great by the way, however, I would like an application for the BlackBerry to provide access.  With the combination of me wanting to learn how to write applications for the BlackBerry platform and the seemingly high demand for a Remember the Milk BlackBerry application, I have decided to take on the challenge.

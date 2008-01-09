@@ -67,3 +67,9 @@
 "created":"2008-01-09T20:42:55Z","modified":"2008-01-09T20:42:55Z","title":"note title here",
 "$t":"a really long note"}}}
 }}}
+
+*rtm.tasks.notes.edit*
+
+{{{
+{"rsp":{"stat":"ok","transaction":{"id":"901169813","undoable":"0"},"note":{"id":"1162644","created":"2008-01-09T20:54:52Z","modified":"2008-01-09T20:55:12Z","title":"a new title","$t":"a new body text"}}}
+}}}

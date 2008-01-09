@@ -1,6 +1,7 @@
 #summary Example JSON responses from the RTM API
 
 *rtm.lists.getList*
+  * NOTE: `filter` is only returned when the list is a smart list
 
 {{{
 {"rsp":{"stat":"ok","lists":{"list":[{"id":"530602","name":"Inbox","deleted":"0","locked":"1",
@@ -12,6 +13,7 @@
 }}}
 
 *rtm.lists.delete*
+  * NOTE: `filter` is only returned when the list is a smart list
 
 {{{
 {"rsp":{"stat":"ok","transaction":{"id":"829976404","undoable":"1"},"list":{"id":"2346361",
@@ -20,6 +22,7 @@
 }}}
 
 *rtm.lists.archive*
+  * NOTE: `filter` is only returned when the list is a smart list
 
 {{{
 {"rsp":{"stat":"ok","transaction":{"id":"831423147","undoable":"1"},"list":{"id":"2346361",

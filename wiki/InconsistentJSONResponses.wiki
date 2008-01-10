@@ -22,3 +22,21 @@
   * if there are more than one note associated with a task a JSON object is returned withe a JSON array of contacts: `"notes":{"note":[{"id":"1149301","created":"2008-01-07T12:36:35Z","modified":"2008-01-07T12:36:35Z","title":"","$t":"this is another note"},{"id":"1149300","created":"2008-01-07T12:36:34Z","modified":"2008-01-07T12:36:34Z","title":"","$t":"this is a note"}]}`
 
   * Another note with the JSON response of a note.  The actual content of the note is returned with a key of `$t` which I am not sure is intentional or a bug.
+
+===rtm.locations.getList===
+
+No Location
+{{{
+{"rsp":{"stat":"ok","locations":[]}}
+}}}
+
+One Location
+{{{
+{"rsp":{"stat":"ok","locations":{"location":{"id":"132824","name":"Home","longitude":"-76.555352210999",
+"latitude":"37.129973890842","zoom":"16","address":"","viewable":"1"}}}}
+}}}
+
+Multiple Locations
+{{{
+{"rsp":{"stat":"ok","locations":{"location":[{"id":"132829","name":"Apartment","longitude":"-80.447752475739","latitude":"37.212805881294","zoom":"17","address":"","viewable":"1"},{"id":"132824","name":"Home","longitude":"-76.555352210999","latitude":"37.129973890842","zoom":"16","address":"","viewable":"1"}]}}}
+}}}

@@ -25,18 +25,18 @@
 
 ===rtm.locations.getList===
 
-No Location
+No Location - empty array
 {{{
 {"rsp":{"stat":"ok","locations":[]}}
 }}}
 
-One Location
+One Location - object
 {{{
 {"rsp":{"stat":"ok","locations":{"location":{"id":"132824","name":"Home","longitude":"-76.555352210999",
 "latitude":"37.129973890842","zoom":"16","address":"","viewable":"1"}}}}
 }}}
 
-Multiple Locations
+Multiple Locations - object with array
 {{{
 {"rsp":{"stat":"ok","locations":{"location":[{"id":"132829","name":"Apartment","longitude":"-80.447752475739","latitude":"37.212805881294","zoom":"17","address":"","viewable":"1"},{"id":"132824","name":"Home","longitude":"-76.555352210999","latitude":"37.129973890842","zoom":"16","address":"","viewable":"1"}]}}}
 }}}

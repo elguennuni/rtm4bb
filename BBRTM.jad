@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+MIDlet-Version: 0.1
+MIDlet-Jar-Size: 47262
+MicroEdition-Configuration: CLDC-1.1
+MIDlet-Jar-URL: BBRTM.jar
+RIM-COD-Module-Dependencies: net_rim_cldc
+RIM-MIDlet-Flags-1: 0
+RIM-COD-Module-Name: BBRTM
+MIDlet-Name: BBRTM
+RIM-COD-Size: 16412
+RIM-COD-Creation-Time: 1200611550
+RIM-MIDlet-Position-1: 1
+MIDlet-1: BBRTM,,
+RIM-COD-URL: BBRTM.cod
+MIDlet-Description: Remember the Milk BlackBerry Application
+RIM-COD-SHA1: f6 80 e3 0f 66 19 78 b2 d8 24 88 28 f2 49 b4 f1 a2 17 85 51
+MicroEdition-Profile: MIDP-2.0
+MIDlet-Vendor: Jason Emerick

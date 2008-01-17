@@ -14,8 +14,16 @@ AutoRestart=0
 ]
 [DependsOn
 ]
+Description=Remember the Milk BlackBerry Application
 ExcludeFromBuildAll=0
 [Files
+images\none.png
+images\p1.png
+images\p2.png
+images\p3.png
+images\rtm.png
+src\org\emerick\rtm\BBRTM.java
+src\org\emerick\rtm\FontColorField.java
 src\org\emerick\rtm\List.java
 src\org\emerick\rtm\Location.java
 src\org\emerick\rtm\Note.java
@@ -23,6 +31,8 @@ src\org\emerick\rtm\RTMAPI.java
 src\org\emerick\rtm\RTMException.java
 src\org\emerick\rtm\StringComparator.java
 src\org\emerick\rtm\Task.java
+src\org\emerick\rtm\TaskListField.java
+src\org\emerick\rtm\TaskListScreen.java
 src\org\emerick\rtm\Transaction.java
 src\org\emerick\rtm\URLBuilder.java
 src\org\emerick\rtm\User.java
@@ -39,6 +49,7 @@ HaveAlxImports=0
 HaveDefs=0
 HaveImports=0
 [Icons
+images\rtm.png
 ]
 [ImplicitRules
 ]
@@ -49,8 +60,11 @@ Options=-quiet
 OutputFileName=BBRTM
 [PackageProtection
 ]
-RibbonPosition=0
+RibbonPosition=1
 RunOnStartup=0
 StartupTier=7
 SystemModule=0
+Title=BBRTM
 Type=0
+Vendor=Jason Emerick
+Version=0.1

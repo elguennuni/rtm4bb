@@ -40,6 +40,8 @@ public class FontColorField extends LabelField
     
     public void paint(Graphics g)
     {
+        //g.setBackgroundColor(0x00359AFF);
+        //g.clear();
         g.setColor(color);
         super.paint(g);
     }

@@ -36,6 +36,16 @@ final class TaskListScreen extends MainScreen{
         add(new LabelField("A title box for this list", Field.FIELD_HCENTER));
         add(taskListField);
         
+        try
+        {
+            FontFamily fontFamily = FontFamily.forName("BBClarity");
+            Font font = fontFamily.getFont(Font.PLAIN, 18);
+            Font.setDefaultFont(font);
+        }
+        catch(ClassNotFoundException e)
+        {
+            System.out.println(e.toString());
+        }
         
     }
     

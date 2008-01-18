@@ -126,7 +126,7 @@ public class TaskListField extends ListField implements ListFieldCallback
         {
             // set the size and position of each field.
             int fontHeight = Font.getDefault().getHeight();
-            int w = getPreferredWidth();
+            int preferredWidth = getPreferredWidth();
             
             // start with the Bitmap Field of the priority icon
             Field field = getField(0);
@@ -135,7 +135,7 @@ public class TaskListField extends ListField implements ListFieldCallback
             
             // set the task name label field 
             field = getField(1);
-            layoutChild(field, getPreferredWidth() - 16, fontHeight+1);
+            layoutChild(field, preferredWidth - 16, fontHeight+1);
             setPositionChild(field, 16, 3);
                         
             // set the list name label field 
@@ -146,9 +146,9 @@ public class TaskListField extends ListField implements ListFieldCallback
             // set the due time name label field 
             field = getField(3);
             layoutChild(field, 150, fontHeight+1);
-            setPositionChild(field, getPreferredWidth() - 152, fontHeight+6);
+            setPositionChild(field, preferredWidth - 152, fontHeight+6);
 
-            setExtent(getPreferredWidth(), getPreferredHeight());
+            setExtent(preferredWidth, getPreferredHeight());
         }
         
         // The preferred width of a row is defined by the list renderer.

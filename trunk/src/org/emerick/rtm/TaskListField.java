@@ -88,6 +88,24 @@ public class TaskListField extends ListField implements ListFieldCallback
         
     }      
     
+    public void paint(Graphics g)
+    {
+        //g.setBackgroundColor(0x00E8EEF7);
+        //g.clear();
+        super.paint(g);
+    }    
+    
+      
+    protected void drawFocus(Graphics g, boolean on)
+    {
+        XYRect focusArea = new XYRect();
+        getFocusRect(focusArea);
+        g.setColor(0x00E8EEF7);
+        drawHighlightRegion(g, Field.HIGHLIGHT_FOCUS | Field.HIGHLIGHT_SELECT, on, focusArea.x, focusArea.y, focusArea.width, focusArea.height);
+        
+        super.drawFocus(g, on);
+    }
+    
     private class TableRowManager extends Manager
     {
         public TableRowManager()

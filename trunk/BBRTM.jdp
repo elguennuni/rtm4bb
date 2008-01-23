@@ -24,6 +24,8 @@ images\p3.png
 images\rtm.png
 src\org\emerick\rtm\BBRTM.java
 src\org\emerick\rtm\FontColorField.java
+src\org\emerick\rtm\HomeMenuListField.java
+src\org\emerick\rtm\HomeScreen.java
 src\org\emerick\rtm\List.java
 src\org\emerick\rtm\Location.java
 src\org\emerick\rtm\Note.java
@@ -31,6 +33,7 @@ src\org\emerick\rtm\RTMAPI.java
 src\org\emerick\rtm\RTMException.java
 src\org\emerick\rtm\StringComparator.java
 src\org\emerick\rtm\Task.java
+src\org\emerick\rtm\TaskComparator.java
 src\org\emerick\rtm\TaskListField.java
 src\org\emerick\rtm\TaskListScreen.java
 src\org\emerick\rtm\Transaction.java

@@ -1,6 +1,7 @@
 /*
  * TaskListScreen.java
  *
+ * This product uses the Remember The Milk API but is not endorsed or certified by Remember The Milk.
  */
 
 package org.emerick.rtm;
@@ -33,7 +34,7 @@ final class TaskListScreen extends MainScreen{
         listener = new TaskListScreenListener();
         addKeyListener(listener);
 
-        add(new LabelField("A title box for this list", Field.FIELD_HCENTER));
+        add(new LabelField("Inbox", Field.FIELD_HCENTER));
         add(taskListField);
         
         try
@@ -48,6 +49,7 @@ final class TaskListScreen extends MainScreen{
         }
         
     }
+   
     
     
     

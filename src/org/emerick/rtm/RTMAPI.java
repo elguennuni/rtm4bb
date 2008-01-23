@@ -1,6 +1,9 @@
 /*
  * RTMAPI.java
  *
+ *
+ *
+ * This product uses the Remember The Milk API but is not endorsed or certified by Remember The Milk.
  */
 
 package org.emerick.rtm;
@@ -14,6 +17,7 @@ import javax.microedition.io.HttpConnection;
 import java.io.InputStream;
 import java.util.Vector;
 import net.rim.device.api.crypto.MD5Digest;
+import net.rim.device.api.io.Base64InputStream;
 
 
 
@@ -40,7 +44,12 @@ public class RTMAPI
     public RTMAPI(String key, String secret)
     {
         this.key = key;
-        this.secret = secret;
+        try{
+            this.secret = new String(Base64InputStream.decode(secret));
+        }
+        catch(IOException e)
+        {
+        }
         format = "json";
         authToken = "";
         timeline = "";
@@ -387,6 +396,9 @@ public class RTMAPI
         url.append("method", "rtm.tasks.getList");
         
         String result = httpRequest(url.getURL());
+        
+        System.out.println(result);
+        
         
         try 
         {

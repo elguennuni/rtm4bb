@@ -1,6 +1,8 @@
 /*
  * TaskListField.java
  *
+ *
+ * This product uses the Remember The Milk API but is not endorsed or certified by Remember The Milk.
  */
 
 package org.emerick.rtm;
@@ -9,6 +11,7 @@ import net.rim.device.api.ui.*;
 import net.rim.device.api.ui.component.*;
 import net.rim.device.api.ui.container.*;
 import net.rim.device.api.system.Bitmap;
+import java.util.Vector;
 
 /**
  * @author Jason Emerick
@@ -17,94 +20,69 @@ public class TaskListField extends ListField implements ListFieldCallback
 {
     
     private Task[] tasks;
-    private TableRowManager[] rows;
+    private Vector rows;
     private Bitmap p1;
     private Bitmap p2;
     private Bitmap p3;
     
     public TaskListField(Task[] tasks)
     {
-        this.tasks = tasks;
-        int numRows = tasks.length;
-        numRows = 8;
-        
-        rows = new TableRowManager[numRows];
+        super(0, ListField.MULTI_SELECT);
+        int height = Font.getDefault().getHeight() * 2 + 4;
+        setRowHeight(height);
+        setEmptyString("* No Tasks *", DrawStyle.HCENTER);
+        setCallback(this);
         
         p1 = Bitmap.getBitmapResource("p1.png");
         p2 = Bitmap.getBitmapResource("p2.png");
         p3 = Bitmap.getBitmapResource("p3.png");
         
-    
-        rows[0] = new TableRowManager();
-        rows[0].add(new BitmapField(p1));
-        LabelField boldField = new LabelField("A task due today", DrawStyle.ELLIPSIS);
-        boldField.setFont(Font.getDefault().derive(Font.BOLD));
-        rows[0].add(boldField);
-        rows[0].add(new FontColorField("Inbox", DrawStyle.ELLIPSIS, 0x00878787));
-        rows[0].add(new FontColorField("Jan 14, 1:00 PM", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787));
-        rows[1] = new TableRowManager();
-        rows[1].add(new BitmapField(p2));
-        rows[1].add(new LabelField("Another task name here", DrawStyle.ELLIPSIS));
-        rows[1].add(new FontColorField("Inbox", DrawStyle.ELLIPSIS, 0x00878787));
-        rows[1].add(new FontColorField("Feb 23, 12:00 PM", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787));
-        rows[2] = new TableRowManager();
-        rows[2].add(new BitmapField(p3));
-        rows[2].add(new LabelField("A really really really long task name", DrawStyle.ELLIPSIS));
-        rows[2].add(new FontColorField("School", DrawStyle.ELLIPSIS, 0x00878787));
-        rows[2].add(new FontColorField("Mar 19, 7:00 AM", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787));
-        rows[3] = new TableRowManager();
-        rows[3].add(new NullField());
-        rows[3].add(new LabelField("task w/ no due date/priority", DrawStyle.ELLIPSIS));
-        rows[3].add(new FontColorField("Shopping", DrawStyle.ELLIPSIS, 0x00878787));
-        rows[3].add(new NullField());
-        rows[4] = new TableRowManager();
-        rows[4].add(new NullField());
-        rows[4].add(new LabelField("A task w/ no due time", DrawStyle.ELLIPSIS));
-        rows[4].add(new FontColorField("ECE 4560", DrawStyle.ELLIPSIS, 0x00878787));
-        rows[4].add(new FontColorField("Apr 31", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787));  
-        rows[5] = new TableRowManager();
-        rows[5].add(new NullField());
-        rows[5].add(new LabelField("A task w/ no due time", DrawStyle.ELLIPSIS));
-        rows[5].add(new FontColorField("ECE 4560", DrawStyle.ELLIPSIS, 0x00878787));
-        rows[5].add(new FontColorField("Apr 31", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787));
-        rows[6] = new TableRowManager();
-        rows[6].add(new NullField());
-        rows[6].add(new LabelField("A task w/ no due time", DrawStyle.ELLIPSIS));
-        rows[6].add(new FontColorField("ECE 4560", DrawStyle.ELLIPSIS, 0x00878787));
-        rows[6].add(new FontColorField("Apr 31", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787));
-        rows[7] = new TableRowManager();
-        rows[7].add(new NullField());
-        rows[7].add(new LabelField("A task w/ no due time", DrawStyle.ELLIPSIS));
-        rows[7].add(new FontColorField("ECE 4560", DrawStyle.ELLIPSIS, 0x00878787));
-        rows[7].add(new FontColorField("Apr 31", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787));      
+        this.tasks = tasks;
+        rows = new Vector();
         
-        int height = Font.getDefault().getHeight() * 2 + 4;
+        for(int x = 0; x < tasks.length; ++x)
+        {
+            TableRowManager row = new TableRowManager();
+            
+            
+            // SET THE PRIORITY BITMAP FIELD
+            // if high priority, display p1 bitmap
+            if(tasks[x].getPriority().equals("1"))
+            {
+                row.add(new BitmapField(p1));
+            }
+            // if priority is 2, set p2 bitmap
+            else if(tasks[x].getPriority().equals("2"))
+            {
+                row.add(new BitmapField(p2));
+            }
+            // if priority is 3, set p3 bitmap
+            else if(tasks[x].getPriority().equals("3"))
+            {
+                row.add(new BitmapField(p3));
+            }
+            // no priority set
+            else
+            {
+                row.add( new NullField());
+            }
+            
+            // SET THE TASK NAME LABELFIELD
+            // if overdue, bold/underline
+            // if due today, bold
+            row.add(new LabelField(tasks[x].getName(), DrawStyle.ELLIPSIS));
+            
+            // SET THE LIST NAME
+            row.add(new FontColorField(tasks[x].getListID(), DrawStyle.ELLIPSIS, 0x00878787));
+            
+            // SET THE DUE DATE/TIME
+            row.add(new FontColorField(tasks[x].getDue(), DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787));
+            
+            rows.addElement(row);
+        }
         
-        setRowHeight(height);
-        setEmptyString("* No Tasks *", DrawStyle.HCENTER);
-        setSize(numRows);
-        setCallback(this);
-        
-        
+        setSize(rows.size());             
     }      
-    
-    public void paint(Graphics g)
-    {
-        //g.setBackgroundColor(0x00E8EEF7);
-        //g.clear();
-        super.paint(g);
-    }    
-    
-      
-    protected void drawFocus(Graphics g, boolean on)
-    {
-        XYRect focusArea = new XYRect();
-        getFocusRect(focusArea);
-        g.setColor(0x00E8EEF7);
-        drawHighlightRegion(g, Field.HIGHLIGHT_FOCUS | Field.HIGHLIGHT_SELECT, on, focusArea.x, focusArea.y, focusArea.width, focusArea.height);
-        
-        super.drawFocus(g, on);
-    }
     
     private class TableRowManager extends Manager
     {
@@ -186,11 +164,11 @@ public class TaskListField extends ListField implements ListFieldCallback
         
 
     // ListFieldCallback Implementation
-    public void drawListRow(ListField listField, Graphics graphics, int index, int y, int width)
+    public void drawListRow(ListField listField, Graphics g, int index, int y, int width)
     {
         TaskListField list = (TaskListField) listField;
-        TableRowManager rowManager = list.rows[index];
-        rowManager.drawRow(graphics, 0, y, width, list.getRowHeight());
+        TableRowManager rowManager = (TableRowManager)list.rows.elementAt(index);
+        rowManager.drawRow(g, 0, y, width, list.getRowHeight());
     }
     
     public Object get(ListField list, int index)
@@ -222,6 +200,12 @@ public class TaskListField extends ListField implements ListFieldCallback
         return menu;        
     }
     
+    protected boolean trackwheelClick(int status, int time)
+    {
+        UiApplication.getUiApplication().pushScreen(new HomeScreen());
+        return true;
+    }
+    
     private final class CompleteTaskMenuItem extends MenuItem
     {
         public CompleteTaskMenuItem()
@@ -231,9 +215,16 @@ public class TaskListField extends ListField implements ListFieldCallback
         
         public void run()
         {
-            int index = getSelectedIndex();
-            Dialog.alert("Completing Task Index: " + index);
+            int[] items = getSelection();
+            
+            Dialog.alert("Completing Tasks: " + items.length);
         }
+    }
+    
+    public void delete(int index)
+    {
+        
+        super.delete(index);
     }
     
     private final class EditTaskMenuItem extends MenuItem

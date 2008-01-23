@@ -1,8 +1,8 @@
 /*
  * FontColorRichTextField.java
  *
- * © <your company here>, 2003-2007
- * Confidential and proprietary.
+ * 
+ * This product uses the Remember The Milk API but is not endorsed or certified by Remember The Milk.
  */
 
 package org.emerick.rtm;

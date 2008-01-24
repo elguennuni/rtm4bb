@@ -21,6 +21,7 @@ public class HomeMenuListField extends ListField implements ListFieldCallback
 {
 
     private TableRowManager[] rows;
+    private Font font;
     
     public HomeMenuListField()
     {
@@ -29,48 +30,50 @@ public class HomeMenuListField extends ListField implements ListFieldCallback
         setCallback(this);
         setRowHeight(36);
         rows = new TableRowManager[6];
+        
+        font = Font.getDefault();
 
         // create a table row manager
         rows[0] = new TableRowManager();
         // set the menu item name
-        rows[0].add(new LabelField("Today", DrawStyle.ELLIPSIS));
+        rows[0].add(new RichTextField("Today", DrawStyle.ELLIPSIS));
         // set the number of list items if there are any
-        rows[0].add(new FontColorField("(5)", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787));
+        rows[0].add(new FontColorField("(5)", DrawStyle.ELLIPSIS | Field.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
         
         // create a table row manager
         rows[1] = new TableRowManager();
         // set the menu item name
-        rows[1].add(new LabelField("Tomorrow", DrawStyle.ELLIPSIS));
+        rows[1].add(new RichTextField("Tomorrow", DrawStyle.ELLIPSIS));
         // set the number of list items if there are any
-        rows[1].add(new FontColorField("(4)", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787));
+        rows[1].add(new FontColorField("(4)", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
         
         // create a table row manager
         rows[2] = new TableRowManager();
         // set the menu item name
-        rows[2].add(new LabelField("This Week", DrawStyle.ELLIPSIS));
+        rows[2].add(new RichTextField("This Week", DrawStyle.ELLIPSIS));
         // set the number of list items if there are any
-        rows[2].add(new FontColorField("(18)", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787));
+        rows[2].add(new FontColorField("(18)", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
         
         // create a table row manager
         rows[3] = new TableRowManager();
         // set the menu item name
-        rows[3].add(new LabelField("Lists", DrawStyle.ELLIPSIS));
+        rows[3].add(new RichTextField("Lists", DrawStyle.ELLIPSIS));
         // set the number of list items if there are any
-        rows[3].add(new FontColorField("", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787));
+        rows[3].add(new FontColorField("", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
         
         // create a table row manager
         rows[4] = new TableRowManager();
         // set the menu item name
-        rows[4].add(new LabelField("Tags", DrawStyle.ELLIPSIS));
+        rows[4].add(new RichTextField("Tags", DrawStyle.ELLIPSIS));
         // set the number of list items if there are any
-        rows[4].add(new FontColorField("", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787));
+        rows[4].add(new FontColorField("", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
         
         // create a table row manager
         rows[5] = new TableRowManager();
         // set the menu item name
-        rows[5].add(new LabelField("Locations", DrawStyle.ELLIPSIS));
+        rows[5].add(new RichTextField("Locations", DrawStyle.ELLIPSIS));
         // set the number of list items if there are any
-        rows[5].add(new FontColorField("", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787));
+        rows[5].add(new FontColorField("", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
         
     }      
     
@@ -114,14 +117,14 @@ public class HomeMenuListField extends ListField implements ListFieldCallback
             int preferredHeight = getPreferredHeight();
             
             Field field = getField(0);
-            layoutChild(field, preferredWidth - 75, preferredHeight);
-            setPositionChild(field, 0, 0);
+            layoutChild(field, preferredWidth - 110, preferredHeight);
+            setPositionChild(field, 35, 12);
             
             field = getField(1);
             layoutChild(field, 75, preferredHeight);
-            setPositionChild(field, preferredWidth-75, 0);
+            setPositionChild(field, preferredWidth-75, 11);
 
-            setExtent(preferredWidth, getPreferredHeight());
+            setExtent(preferredWidth, preferredHeight);
         }
         
         // The preferred width of a row is defined by the list renderer.
@@ -175,17 +178,44 @@ public class HomeMenuListField extends ListField implements ListFieldCallback
         if( index == 0 )
         {
             Task[] tasks = rtm.getTasks("","due:today AND status:incomplete");
+            tasks[0].getCalendar();
+            boolean today = tasks[0].dueToday();
+            boolean tomorrow = tasks[0].dueTomorrow();
             Arrays.sort(tasks, new TaskComparator());
             UiApplication.getUiApplication().pushScreen(new TaskListScreen(tasks));
         }
         // if tomorrow is selected
-        if( index == 1 )
+        else if( index == 1 )
         {
             Task[] tasks = rtm.getTasks("","due:tomorrow AND status:incomplete");
+            boolean today = tasks[0].dueToday();
+            boolean tomorrow = tasks[0].dueTomorrow();
             Arrays.sort(tasks, new TaskComparator());
             UiApplication.getUiApplication().pushScreen(new TaskListScreen(tasks));
         }
-            
+        // if this week is selected
+        else if( index == 2 )
+        {
+            UiApplication.getUiApplication().pushScreen(new ThisWeekScreen());
+        }
+        // if lists are selected
+        else if( index == 3 )
+        {
+            List[] lists = rtm.getLists();
+            UiApplication.getUiApplication().pushScreen(new ListsScreen(lists));
+        }        
+        // if tags are selected
+        else if( index == 4 )
+        {
+            String[] tags = {"tag1", "tag2", "tag3"};
+            UiApplication.getUiApplication().pushScreen(new TagsScreen(tags));
+        }
+        // if locations are selected
+        else if( index == 5 )
+        {
+            Location[] locations = rtm.getLocations();
+            UiApplication.getUiApplication().pushScreen(new LocationsScreen(locations));
+        }
         
         
         return true;

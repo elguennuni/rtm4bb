@@ -8,6 +8,10 @@ package org.emerick.rtm;
 
 
 import java.util.Vector;
+import java.util.Calendar;
+import java.util.TimeZone;
+import java.util.Date;
+import net.rim.device.api.util.DateTimeUtilities;
 
 /**
  * 
@@ -262,8 +266,49 @@ public class Task
         this.url = url;
     }
         
+    public Calendar getCalendar()
+    {
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+
+        cal.set(Calendar.YEAR, Integer.parseInt(due.substring(0,4)));
+        cal.set(Calendar.MONTH, Integer.parseInt(due.substring(5,7))-1);
+        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(due.substring(8,10)));
+        int hour = Integer.parseInt(due.substring(11,13));
+        int ampm = Calendar.AM;
+        if( hour > 11 )
+        {
+            // set to PM
+            hour-=12;
+            ampm = Calendar.PM;
+        }      
+        cal.set(Calendar.AM_PM, ampm);
+        cal.set(Calendar.HOUR, hour);
+        cal.set(Calendar.MINUTE, Integer.parseInt(due.substring(14,16)));
+        cal.set(Calendar.SECOND, Integer.parseInt(due.substring(17,19)));
+        cal.set(Calendar.MILLISECOND, 0);
+        
+        return cal;
+    }
     
+    public boolean dueToday()
+    {
+        Calendar cal = getCalendar();
+        Calendar today = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        System.out.println(today.getTime().toString());
+        
+        return DateTimeUtilities.isSameDate(cal.getTime().getTime(), today.getTime().getTime(), TimeZone.getTimeZone("UTC"), null);
+    }
     
+    public boolean dueTomorrow()
+    {
+        Calendar cal = getCalendar();
+        Calendar tomorrow = DateTimeUtilities.getNextDate(5 * DateTimeUtilities.ONEHOUR);
+        
+        System.out.println(tomorrow.getTime().toString());
+        
+        return DateTimeUtilities.isSameDate(cal.getTime().getTime(), tomorrow.getTime().getTime(), TimeZone.getTimeZone("UTC"), null);
+    }
+        
         
         
 } 

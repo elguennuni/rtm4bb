@@ -27,6 +27,12 @@ public class FontColorField extends LabelField
         int height = Font.getDefault().getHeight() - 3;
         setFont(Font.getDefault().derive(Font.PLAIN, height));
     }
+    public FontColorField(String text, long style, int color, Font font)
+    {
+        super(text, style);
+        this.color = color;
+        setFont(font);
+    }
     
     public void setColor(int color)
     {

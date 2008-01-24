@@ -1,5 +1,5 @@
 /*
- * HomeScreen.java
+ * TagsScreen.java
  *
  * This product uses the Remember The Milk API but is not endorsed or certified by Remember The Milk.
  */
@@ -16,16 +16,14 @@ import net.rim.device.api.system.*;
  * 
  * @author Jason Emerick
  */
-final class HomeScreen extends MainScreen{
+final class TagsScreen extends MainScreen{
 
-    public HomeScreen() 
+    public TagsScreen(String[] tags) 
     {
         // call the parents constructor
         super();
-        setTitle(new LabelField("BBRTM", LabelField.USE_ALL_WIDTH | DrawStyle.HCENTER));
-        
-        add(new HomeMenuListField());
-
+        setTitle(new LabelField("BBRTM - Tags", LabelField.USE_ALL_WIDTH | DrawStyle.HCENTER));
+        add(new TagListField(tags));
     }
 }
 

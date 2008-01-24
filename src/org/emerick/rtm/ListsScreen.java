@@ -1,5 +1,5 @@
 /*
- * HomeScreen.java
+ * ListsScreen.java
  *
  * This product uses the Remember The Milk API but is not endorsed or certified by Remember The Milk.
  */
@@ -16,16 +16,16 @@ import net.rim.device.api.system.*;
  * 
  * @author Jason Emerick
  */
-final class HomeScreen extends MainScreen{
+final class ListsScreen extends MainScreen{
 
-    public HomeScreen() 
+    public ListsScreen(List[] lists) 
     {
         // call the parents constructor
         super();
-        setTitle(new LabelField("BBRTM", LabelField.USE_ALL_WIDTH | DrawStyle.HCENTER));
+        setTitle(new LabelField("BBRTM - Lists", LabelField.USE_ALL_WIDTH | DrawStyle.HCENTER));   
         
-        add(new HomeMenuListField());
-
+        add(new ListsListField(lists));
+             
     }
 }
 

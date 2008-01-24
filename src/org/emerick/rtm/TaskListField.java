@@ -28,9 +28,8 @@ public class TaskListField extends ListField implements ListFieldCallback
     public TaskListField(Task[] tasks)
     {
         super(0, ListField.MULTI_SELECT);
-        int height = Font.getDefault().getHeight() * 2 + 4;
-        setRowHeight(height);
-        setEmptyString("* No Tasks *", DrawStyle.HCENTER);
+        setRowHeight(40);
+        setEmptyString("Hooray, no tasks here!", DrawStyle.HCENTER);
         setCallback(this);
         
         p1 = Bitmap.getBitmapResource("p1.png");

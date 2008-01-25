@@ -23,7 +23,7 @@ final class TaskListScreen extends MainScreen{
     private TaskListScreenListener listener;
     
     
-    public TaskListScreen(Task[] tasks) 
+    public TaskListScreen(String title, Task[] tasks) 
     {
         // call the parents constructor
         super(Manager.NO_VERTICAL_SCROLLBAR);
@@ -34,7 +34,7 @@ final class TaskListScreen extends MainScreen{
         listener = new TaskListScreenListener();
         addKeyListener(listener);
 
-        add(new LabelField("Inbox", Field.FIELD_HCENTER));
+        add(new LabelField(title, Field.FIELD_HCENTER));
         add(taskListField);
         
         try

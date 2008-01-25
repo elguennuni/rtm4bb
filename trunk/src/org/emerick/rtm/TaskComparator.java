@@ -22,7 +22,18 @@ public class TaskComparator implements Comparator
     public int compare(Object a, Object b)
     {
         int comparePriority = ((Task)a).getPriority().compareTo(((Task)b).getPriority());
+        
         int compareDue = ((Task)a).getDue().compareTo(((Task)b).getDue());
+        
+        if(((Task)a).getDue().length() == 0 && ((Task)b).getDue().length() > 0)
+        {
+            compareDue = 1;
+        }
+        else if(((Task)b).getDue().length() == 0 && ((Task)a).getDue().length() > 0)
+        {
+            compareDue = -1;
+        }
+
         if( comparePriority == 0 )
             return compareDue;
         else

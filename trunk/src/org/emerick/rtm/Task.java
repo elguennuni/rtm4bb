@@ -268,33 +268,67 @@ public class Task
         
     public Calendar getCalendar()
     {
+        if( due.length() == 0 )
+        {
+            return null;
+        }
+            
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 
         cal.set(Calendar.YEAR, Integer.parseInt(due.substring(0,4)));
         cal.set(Calendar.MONTH, Integer.parseInt(due.substring(5,7))-1);
         cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(due.substring(8,10)));
-        int hour = Integer.parseInt(due.substring(11,13));
-        int ampm = Calendar.AM;
-        if( hour > 11 )
-        {
+        //int hour = Integer.parseInt(due.substring(11,13));
+        //int ampm = Calendar.AM;
+        //if( hour > 11 )
+        //{
             // set to PM
-            hour-=12;
-            ampm = Calendar.PM;
-        }      
-        cal.set(Calendar.AM_PM, ampm);
-        cal.set(Calendar.HOUR, hour);
+         //   hour-=12;
+         //   ampm = Calendar.PM;
+        //}      
+        //cal.set(Calendar.AM_PM, ampm);
+        //cal.set(Calendar.HOUR, hour);
+        
+        
+        cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(due.substring(11,13)));
         cal.set(Calendar.MINUTE, Integer.parseInt(due.substring(14,16)));
         cal.set(Calendar.SECOND, Integer.parseInt(due.substring(17,19)));
-        cal.set(Calendar.MILLISECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);  
         
         return cal;
+    }
+    
+    public boolean overdue()
+    {
+        Calendar cal = getCalendar();
+        if( cal == null )
+            return false;
+        Calendar today = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        Calendar notime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        DateTimeUtilities.zeroCalendarTime(notime);
+        notime.set(Calendar.HOUR_OF_DAY, 5);
+        
+        System.out.println("TASK    : " + name);
+        System.out.println("TASK DUE: " + cal.getTime().toString());
+        
+        if( hasDueTime() )
+        {
+            System.out.println("TODAY   : " + today.getTime().toString());
+            return today.after(cal);
+        }
+        else
+        {
+            System.out.println("TODAY   : " + notime.getTime().toString());
+            return notime.after(cal);
+        }
     }
     
     public boolean dueToday()
     {
         Calendar cal = getCalendar();
+        if( cal == null )
+            return false;
         Calendar today = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        System.out.println(today.getTime().toString());
         
         return DateTimeUtilities.isSameDate(cal.getTime().getTime(), today.getTime().getTime(), TimeZone.getTimeZone("UTC"), null);
     }
@@ -302,13 +336,131 @@ public class Task
     public boolean dueTomorrow()
     {
         Calendar cal = getCalendar();
+        if( cal == null )
+            return false;
         Calendar tomorrow = DateTimeUtilities.getNextDate(5 * DateTimeUtilities.ONEHOUR);
-        
-        System.out.println(tomorrow.getTime().toString());
-        
+
         return DateTimeUtilities.isSameDate(cal.getTime().getTime(), tomorrow.getTime().getTime(), TimeZone.getTimeZone("UTC"), null);
     }
+    
+    public boolean dueThisWeek()
+    {
+        Calendar cal = getCalendar();
+        if( cal == null )
+            return false;
         
+        for( int x = 0; x < 7; x++)
+        {
+            Calendar test = DateTimeUtilities.getNextDate(5 * DateTimeUtilities.ONEHOUR + x * DateTimeUtilities.ONEDAY); 
+            System.out.println(test.getTime().toString());
+            if(DateTimeUtilities.isSameDate(cal.getTime().getTime(), test.getTime().getTime(), TimeZone.getTimeZone("UTC"), null))
+            {
+                return true;
+            }
+        }
+        
+        
+        return false;
+    }
+        
+    
+    public boolean hasDueTime()
+    {
+        return hasduetime.equals("1");
+    }
+    
+    public String getFormattedDue()
+    {
+        Calendar cal = getCalendar();
+        
+        if(cal == null)
+            return "";
+            
+        boolean today = dueToday();
+        boolean time = hasDueTime();
+        String format = "";
+        
+        if(today)
+        {
+            if(! time)
+            {
+                format += "Today";
+            }
+        }
+        else if(dueThisWeek())
+        {
+            int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
+            if( dayofweek == Calendar.MONDAY )
+            {
+                format += "Monday";
+            }
+            else if( dayofweek == Calendar.TUESDAY )
+            {
+                format += "Tuesday";
+            }
+            else if( dayofweek == Calendar.WEDNESDAY )
+            {
+                format += "Wednesday";
+            }
+            else if( dayofweek == Calendar.THURSDAY )
+            {
+                format += "Thursday";
+            }
+            else if( dayofweek == Calendar.FRIDAY )
+            {
+                format += "Friday";
+            }
+            else if( dayofweek == Calendar.SATURDAY )
+            {
+                format += "Saturday";
+            }
+            else // if( dayofweek == Calendar.SUNDAY )
+            {
+                format += "Sunday";
+            }
+        }
+        else
+        {
+            format += (cal.get(Calendar.MONTH) + 1);
+            format += "/";
+            format += cal.get(Calendar.DAY_OF_MONTH);
+            format += "/";
+            format += cal.get(Calendar.YEAR);
+        }            
+        
+        if(time)
+        {
+            if(! today)
+            {
+                format += " @ ";
+            }
+            int offset = TimeZone.getTimeZone("America/New_York").getRawOffset()/1000/60/60;
+            int hour = cal.get(Calendar.HOUR) + offset;
+            if( hour == 0)
+            { 
+                hour = 12;
+            }
+            format += hour;
+            format += ":";
+            String min = "";
+            min += cal.get(Calendar.MINUTE);;
+            if(min.length() == 1)
+            {
+                min = "0" + min;
+            }
+            format += min;
+            if( cal.get(Calendar.AM_PM) == Calendar.AM)
+            {
+                format += "am";
+            }
+            else
+            {
+                format += "pm";
+            }
+        }
+        
+        return format;
+    }
         
         
 } 

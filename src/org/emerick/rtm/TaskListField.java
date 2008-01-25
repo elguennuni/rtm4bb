@@ -68,14 +68,26 @@ public class TaskListField extends ListField implements ListFieldCallback
             
             // SET THE TASK NAME LABELFIELD
             // if overdue, bold/underline
+            LabelField task = new LabelField(tasks[x].getName(), DrawStyle.ELLIPSIS);
             // if due today, bold
-            row.add(new LabelField(tasks[x].getName(), DrawStyle.ELLIPSIS));
+            if(tasks[x].overdue())
+            {
+                task.setFont(Font.getDefault().derive(Font.BOLD | Font.UNDERLINED));
+                System.out.println("OVERDUE");
+            }
+            else if(tasks[x].dueToday())
+            {
+                task.setFont(Font.getDefault().derive(Font.BOLD));
+                System.out.println("TODAY");
+            }
+            
+            row.add(task);
             
             // SET THE LIST NAME
             row.add(new FontColorField(tasks[x].getListID(), DrawStyle.ELLIPSIS, 0x00878787));
             
             // SET THE DUE DATE/TIME
-            row.add(new FontColorField(tasks[x].getDue(), DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787));
+            row.add(new FontColorField(tasks[x].getFormattedDue(), DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787));
             
             rows.addElement(row);
         }

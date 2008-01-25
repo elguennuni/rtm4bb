@@ -178,25 +178,23 @@ public class HomeMenuListField extends ListField implements ListFieldCallback
         if( index == 0 )
         {
             Task[] tasks = rtm.getTasks("","due:today AND status:incomplete");
-            tasks[0].getCalendar();
-            boolean today = tasks[0].dueToday();
-            boolean tomorrow = tasks[0].dueTomorrow();
             Arrays.sort(tasks, new TaskComparator());
-            UiApplication.getUiApplication().pushScreen(new TaskListScreen(tasks));
+            UiApplication.getUiApplication().pushScreen(new TaskListScreen("Today", tasks));
         }
         // if tomorrow is selected
         else if( index == 1 )
         {
             Task[] tasks = rtm.getTasks("","due:tomorrow AND status:incomplete");
-            boolean today = tasks[0].dueToday();
-            boolean tomorrow = tasks[0].dueTomorrow();
             Arrays.sort(tasks, new TaskComparator());
-            UiApplication.getUiApplication().pushScreen(new TaskListScreen(tasks));
+            UiApplication.getUiApplication().pushScreen(new TaskListScreen("Tomorrow", tasks));
         }
         // if this week is selected
         else if( index == 2 )
         {
-            UiApplication.getUiApplication().pushScreen(new ThisWeekScreen());
+            Task[] tasks = rtm.getTasks("","list:School AND status:incomplete");
+            Arrays.sort(tasks, new TaskComparator());
+            UiApplication.getUiApplication().pushScreen(new TaskListScreen("School", tasks));
+            //UiApplication.getUiApplication().pushScreen(new ThisWeekScreen());
         }
         // if lists are selected
         else if( index == 3 )

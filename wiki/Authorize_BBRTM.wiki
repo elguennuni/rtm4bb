@@ -21,3 +21,7 @@
 ==BBRTM should be authorized now on your account.==
 
 [http://rtm4bb.googlecode.com/files/login-06.png]
+
+==You can manage BBRTM's access to your account via settings->services tab==
+
+[http://rtm4bb.googlecode.com/files/rtm_services.PNG]

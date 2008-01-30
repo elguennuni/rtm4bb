@@ -24,13 +24,16 @@ public class TaskListField extends ListField implements ListFieldCallback
     private Bitmap p1;
     private Bitmap p2;
     private Bitmap p3;
+    private RTM rtm;
     
-    public TaskListField(Task[] tasks)
+    public TaskListField(RTM rtm, Task[] tasks)
     {
         super(0, ListField.MULTI_SELECT);
         setRowHeight(40);
         setEmptyString("Hooray, no tasks here!", DrawStyle.HCENTER);
         setCallback(this);
+        
+        this.rtm = rtm;
         
         p1 = Bitmap.getBitmapResource("p1.png");
         p2 = Bitmap.getBitmapResource("p2.png");
@@ -84,7 +87,7 @@ public class TaskListField extends ListField implements ListFieldCallback
             row.add(task);
             
             // SET THE LIST NAME
-            row.add(new FontColorField(tasks[x].getListID(), DrawStyle.ELLIPSIS, 0x00878787));
+            row.add(new FontColorField(rtm.getListName(tasks[x].getListID()), DrawStyle.ELLIPSIS, 0x00878787));
             
             // SET THE DUE DATE/TIME
             row.add(new FontColorField(tasks[x].getFormattedDue(), DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787));
@@ -213,7 +216,7 @@ public class TaskListField extends ListField implements ListFieldCallback
     
     protected boolean trackwheelClick(int status, int time)
     {
-        UiApplication.getUiApplication().pushScreen(new HomeScreen());
+        //UiApplication.getUiApplication().pushScreen(new HomeScreen());
         return true;
     }
     

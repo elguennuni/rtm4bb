@@ -18,13 +18,18 @@ import net.rim.device.api.system.*;
  */
 final class HomeScreen extends MainScreen{
 
-    public HomeScreen() 
+    private RTM rtm;
+    
+    public HomeScreen(RTM rtm ) 
     {
         // call the parents constructor
         super();
+        
+        this.rtm = rtm;
+        
         setTitle(new LabelField("BBRTM", LabelField.USE_ALL_WIDTH | DrawStyle.HCENTER));
         
-        add(new HomeMenuListField());
+        add(new HomeMenuListField(rtm));
 
     }
 }

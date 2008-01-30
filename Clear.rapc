@@ -1,0 +1,10 @@
+MIDlet-Name: Clear
+MIDlet-Version: 0.3.1
+MIDlet-Vendor: Jason Emerick
+MIDlet-Description: Clears the authentication data for BBRTM
+MIDlet-Jar-URL: Clear.jar
+MIDlet-Jar-Size: 0
+MicroEdition-Profile: MIDP-2.0
+MicroEdition-Configuration: CLDC-1.1
+MIDlet-1: BBRTM Clear,../cow.png,
+RIM-MIDlet-Flags-1: 0

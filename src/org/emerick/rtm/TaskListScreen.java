@@ -21,21 +21,23 @@ final class TaskListScreen extends MainScreen{
     private TaskListField taskListField;
     private Task[] tasks;
     private TaskListScreenListener listener;
+    private RTM rtm;
     
     
-    public TaskListScreen(String title, Task[] tasks) 
+    public TaskListScreen(RTM rtm, String title, Task[] tasks) 
     {
         // call the parents constructor
         super(Manager.NO_VERTICAL_SCROLLBAR);
-        
+        this.rtm = rtm;
         this.tasks = tasks;
-        taskListField = new TaskListField(tasks);
+        taskListField = new TaskListField(rtm, tasks);
         
         listener = new TaskListScreenListener();
         addKeyListener(listener);
 
         add(new LabelField(title, Field.FIELD_HCENTER));
         add(taskListField);
+        add(new SeparatorField());
         
         try
         {

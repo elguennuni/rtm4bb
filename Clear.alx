@@ -1,0 +1,31 @@
+<loader version="1.0">
+	<application id="Clear">
+		<name >
+			BBRTM Clear
+		</name>
+		<description >
+			Clears the authentication data for BBRTM
+		</description>
+		<version >
+			0.1
+		</version>
+		<vendor >
+			Jason Emerick
+		</vendor>
+		<copyright >
+			Copyright (c) 2008 Jason Emerick
+		</copyright>
+		<fileset Java="1.33">
+			<directory >
+				
+			</directory>
+			<files >
+				Clear.cod
+
+			</files>
+
+		</fileset>
+
+	</application>
+
+</loader>

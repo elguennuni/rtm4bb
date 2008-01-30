@@ -219,12 +219,8 @@ public class RTMAPI
         url.append("method", "rtm.auth.getToken");
         
         url.append("frob", frob);
-       
-        System.out.println("Auth Token URL:");
-        System.out.println(url.getURL());
-        return url.getURL();
         
-        /*String result = httpRequest(URL);
+        String result = httpRequest(url.getURL());
         
         try 
         {
@@ -236,6 +232,7 @@ public class RTMAPI
                 JSONObject auth = rsp.getJSONObject("auth");
                 
                 authToken = auth.getString("token");
+                
                 return authToken;
             }
             else
@@ -248,11 +245,9 @@ public class RTMAPI
         catch( JSONException e)
         {
            throw new RTMException(e.toString());
-        }*/
+        }
     }
     
-    
-    // TEMP!!!!!!!!!
     public void setAuthToken(String authToken)
     {
         this.authToken = authToken;
@@ -372,7 +367,7 @@ public class RTMAPI
     }
         
     
-    public Task[] getTasks(String list_id, String filter)
+    public Vector getTasks(String list_id, String filter)
     {
         Vector tasks = new Vector();
         URLBuilder url = new URLBuilder(secret,false);
@@ -407,6 +402,11 @@ public class RTMAPI
             
             if(rsp.getString("stat").equalsIgnoreCase("ok"))
             {
+                if( isEmpty(rsp.getString("tasks")))
+                {
+                    return new Vector();
+                }
+                
                 JSONObject t = rsp.getJSONObject("tasks");
                 String str = t.getString("list");
                 int length;
@@ -434,10 +434,31 @@ public class RTMAPI
                     }
                     
                     String listid = list.getString("id");
-                    JSONArray taskseries = list.getJSONArray("taskseries");
-                    for(int y = 0; y < taskseries.length(); y++)
+                    
+                    JSONArray taskseries = null;
+                    int numOfTasks;
+                    if( isJSONArray(list.getString("taskseries")))
                     {
-                        JSONObject task = taskseries.getJSONObject(y);
+                        taskseries = list.getJSONArray("taskseries");
+                        numOfTasks = taskseries.length();
+                    }
+                    else
+                    {
+                        numOfTasks = 1;
+                    }
+                    
+                    for(int y = 0; y < numOfTasks; y++)
+                    {
+                        JSONObject task;
+                        if( numOfTasks > 1)
+                        {
+                            task = taskseries.getJSONObject(y);
+                        }
+                        else
+                        {
+                            task = list.getJSONObject("taskseries");
+                        }
+                        
                         Task theTask = new Task(listid);
                         theTask.setTaskseriesID(task.getString("id"));
                         theTask.setCreated(task.getString("created"));
@@ -517,9 +538,9 @@ public class RTMAPI
                     }
                 }
                     
-               Task[] taskArray = new Task[tasks.size()];
-               tasks.copyInto(taskArray); 
-               return taskArray;
+               //Task[] taskArray = new Task[tasks.size()];
+               //tasks.copyInto(taskArray); 
+               return tasks;
             }
             else
             {
@@ -534,7 +555,7 @@ public class RTMAPI
         }
     }
     
-    public List[] getLists() throws RTMException
+    public Vector getLists() throws RTMException
     {
         Vector listsVector = new Vector();
         URLBuilder url = new URLBuilder(secret,false);
@@ -573,9 +594,9 @@ public class RTMAPI
                     }
                 }
                 
-                List[] listArray = new List[listsVector.size()];
-               listsVector.copyInto(listArray); 
-               return listArray;
+                //List[] listArray = new List[listsVector.size()];
+                //listsVector.copyInto(listArray); 
+                return listsVector;
                 
             }
             else
@@ -1871,7 +1892,7 @@ public class RTMAPI
         } 
     }
     
-    public Location[] getLocations() throws RTMException
+    public Vector getLocations() throws RTMException
     {
         URLBuilder url = new URLBuilder(secret, false);
         
@@ -1912,9 +1933,9 @@ public class RTMAPI
                     }
                 }
                     
-                Location[] array = new Location[locationVector.size()];
-                locationVector.copyInto(array); 
-                return array;
+                //Location[] array = new Location[locationVector.size()];
+                //locationVector.copyInto(array); 
+                return locationVector;
                 
             }
             else

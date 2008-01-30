@@ -20,6 +20,12 @@
 
 [http://rtm4bb.googlecode.com/files/login-05.png]
 
+== Scroll down to authorize BBRTM on your account.  Click "Yes, go for it!" ==
+
+[http://rtm4bb.googlecode.com/files/auth-01.png]
+
+[http://rtm4bb.googlecode.com/files/auth.png]
+
 ==BBRTM should be authorized now on your account.==
 
 [http://rtm4bb.googlecode.com/files/login-06.png]

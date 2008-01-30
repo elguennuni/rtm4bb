@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+RIM-COD-Module-Name: Clear
+RIM-COD-Module-Dependencies: net_rim_cldc
+MIDlet-Jar-Size: 3102
+MIDlet-1: ,,
+RIM-COD-Creation-Time: 1201674207
+MIDlet-Jar-URL: Clear.jar
+RIM-COD-URL: Clear.cod
+RIM-COD-SHA1: ce 22 c4 4c 01 32 fc c8 14 ce a5 ad 20 c4 ca ed 8f 47 da 0f
+RIM-COD-Size: 8528
+MicroEdition-Configuration: CLDC-1.1
+MIDlet-Version: 0.0
+MIDlet-Name: Clear
+MIDlet-Description: Clears the authentication data for BBRTM
+MIDlet-Vendor: <unknown>
+MicroEdition-Profile: MIDP-2.0
+RIM-MIDlet-Flags-1: 0

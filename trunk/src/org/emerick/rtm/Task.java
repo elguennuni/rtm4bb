@@ -298,15 +298,23 @@ public class Task
         return cal;
     }
     
+    
     public boolean overdue()
     {
         Calendar cal = getCalendar();
+        
         if( cal == null )
             return false;
+        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) - 5);
         Calendar today = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        today.set(Calendar.HOUR_OF_DAY, today.get(Calendar.HOUR_OF_DAY) - 5);
         Calendar notime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        DateTimeUtilities.zeroCalendarTime(notime);
-        notime.set(Calendar.HOUR_OF_DAY, 5);
+        notime.set(Calendar.HOUR_OF_DAY, notime.get(Calendar.HOUR_OF_DAY) - 5);
+        System.out.println("NOTIME: " + notime.getTime().toString());
+        notime.set(Calendar.HOUR_OF_DAY, 0);
+        notime.set(Calendar.MINUTE, 0);
+        notime.set(Calendar.SECOND, 0);
+        notime.set(Calendar.MILLISECOND, 0);
         
         System.out.println("TASK    : " + name);
         System.out.println("TASK DUE: " + cal.getTime().toString());
@@ -326,19 +334,30 @@ public class Task
     public boolean dueToday()
     {
         Calendar cal = getCalendar();
+        
         if( cal == null )
             return false;
-        Calendar today = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) - 5);
+        Calendar today = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        today.set(Calendar.HOUR_OF_DAY, today.get(Calendar.HOUR_OF_DAY) - 5);
         
-        return DateTimeUtilities.isSameDate(cal.getTime().getTime(), today.getTime().getTime(), TimeZone.getTimeZone("UTC"), null);
+        return DateTimeUtilities.isSameDate(cal.getTime().getTime(), today.getTime().getTime(), TimeZone.getTimeZone("GMT"), TimeZone.getTimeZone("GMT"));
     }
     
     public boolean dueTomorrow()
     {
         Calendar cal = getCalendar();
+        
         if( cal == null )
             return false;
-        Calendar tomorrow = DateTimeUtilities.getNextDate(5 * DateTimeUtilities.ONEHOUR);
+        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) - 5);    
+        Calendar tomorrow = Calendar.getInstance();
+        tomorrow.set(Calendar.HOUR_OF_DAY, tomorrow.get(Calendar.HOUR_OF_DAY) - 5);
+        tomorrow.set(Calendar.DAY_OF_MONTH, tomorrow.get(Calendar.DAY_OF_MONTH) + 1);
+
+        System.out.println("TASK    : " + name);
+        System.out.println("TASK DUE: " + cal.getTime().toString());
+        System.out.println("TOMORROW: " + tomorrow.getTime().toString());
 
         return DateTimeUtilities.isSameDate(cal.getTime().getTime(), tomorrow.getTime().getTime(), TimeZone.getTimeZone("UTC"), null);
     }
@@ -372,6 +391,7 @@ public class Task
     public String getFormattedDue()
     {
         Calendar cal = getCalendar();
+        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) - 5);
         
         if(cal == null)
             return "";
@@ -434,8 +454,8 @@ public class Task
             {
                 format += " @ ";
             }
-            int offset = TimeZone.getTimeZone("America/New_York").getRawOffset()/1000/60/60;
-            int hour = cal.get(Calendar.HOUR) + offset;
+
+            int hour = cal.get(Calendar.HOUR);
             if( hour == 0)
             { 
                 hour = 12;

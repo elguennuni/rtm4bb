@@ -1,0 +1,46 @@
+## RIM Java Development Environment
+# RIM Project file
+AlwaysBuild=0
+[AlxImports
+]
+AutoRestart=0
+[ClassProtection
+]
+[CustomBuildFiles
+]
+[CustomBuildRules
+]
+[DefFiles
+]
+[DependsOn
+]
+Description=Clears the authentication data for BBRTM
+ExcludeFromBuildAll=0
+[Files
+..\cow.png
+Clear.java
+Data.java
+]
+HaveAlxImports=0
+HaveDefs=0
+HaveImports=0
+[Icons
+..\cow.png
+]
+[ImplicitRules
+]
+[Imports
+]
+Listing=0
+Options=-quiet
+OutputFileName=Clear
+[PackageProtection
+]
+RibbonPosition=0
+RunOnStartup=0
+StartupTier=7
+SystemModule=0
+Title=BBRTM Clear
+Type=0
+Vendor=Jason Emerick
+Version=0.3.1

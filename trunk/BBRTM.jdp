@@ -22,6 +22,7 @@ images\p1.png
 images\p2.png
 images\p3.png
 images\rtm.png
+src\org\emerick\rtm\AuthenticationData.java
 src\org\emerick\rtm\BBRTM.java
 src\org\emerick\rtm\FontColorField.java
 src\org\emerick\rtm\HomeMenuListField.java
@@ -33,6 +34,7 @@ src\org\emerick\rtm\Location.java
 src\org\emerick\rtm\LocationsListField.java
 src\org\emerick\rtm\LocationsScreen.java
 src\org\emerick\rtm\Note.java
+src\org\emerick\rtm\RTM.java
 src\org\emerick\rtm\RTMAPI.java
 src\org\emerick\rtm\RTMException.java
 src\org\emerick\rtm\StringComparator.java
@@ -70,11 +72,11 @@ Options=-quiet
 OutputFileName=BBRTM
 [PackageProtection
 ]
-RibbonPosition=1
+RibbonPosition=4
 RunOnStartup=0
 StartupTier=7
 SystemModule=0
 Title=BBRTM
 Type=0
 Vendor=Jason Emerick
-Version=0.1
+Version=0.1.0.3

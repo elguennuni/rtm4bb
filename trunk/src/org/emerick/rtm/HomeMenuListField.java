@@ -22,10 +22,12 @@ public class HomeMenuListField extends ListField implements ListFieldCallback
 
     private TableRowManager[] rows;
     private Font font;
+    private RTM rtm;
     
-    public HomeMenuListField()
+    public HomeMenuListField(RTM rtm)
     {
         super(6);
+        this.rtm = rtm;
         setEmptyString("* No Menu!!! *", DrawStyle.HCENTER);
         setCallback(this);
         setRowHeight(36);
@@ -38,14 +40,14 @@ public class HomeMenuListField extends ListField implements ListFieldCallback
         // set the menu item name
         rows[0].add(new RichTextField("Today", DrawStyle.ELLIPSIS));
         // set the number of list items if there are any
-        rows[0].add(new FontColorField("(5)", DrawStyle.ELLIPSIS | Field.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
+        rows[0].add(new FontColorField("(" + rtm.countDueToday() + ")", DrawStyle.ELLIPSIS | Field.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
         
         // create a table row manager
         rows[1] = new TableRowManager();
         // set the menu item name
         rows[1].add(new RichTextField("Tomorrow", DrawStyle.ELLIPSIS));
         // set the number of list items if there are any
-        rows[1].add(new FontColorField("(4)", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
+        rows[1].add(new FontColorField("(" + rtm.countDueTomorrow() + ")", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
         
         // create a table row manager
         rows[2] = new TableRowManager();
@@ -171,48 +173,39 @@ public class HomeMenuListField extends ListField implements ListFieldCallback
     {
         int index = getSelectedIndex();
         
-        RTMAPI rtm = new RTMAPI("968d8045c952707d8d13f5187a93cb9f", "ODg5ZDhlMjkxNGJiYzkxZg==");
-        rtm.setAuthToken("5a2808b55d06861172aae3f4e4ae2b1802399afd");
-        
         // if today is selected
         if( index == 0 )
         {
-            Task[] tasks = rtm.getTasks("","due:today AND status:incomplete");
-            Arrays.sort(tasks, new TaskComparator());
-            UiApplication.getUiApplication().pushScreen(new TaskListScreen("Today", tasks));
+            
+            UiApplication.getUiApplication().pushScreen(new TaskListScreen(rtm, "Today", rtm.dueToday()));
         }
         // if tomorrow is selected
         else if( index == 1 )
         {
-            Task[] tasks = rtm.getTasks("","due:tomorrow AND status:incomplete");
-            Arrays.sort(tasks, new TaskComparator());
-            UiApplication.getUiApplication().pushScreen(new TaskListScreen("Tomorrow", tasks));
+            UiApplication.getUiApplication().pushScreen(new TaskListScreen(rtm, "Tomorrow", rtm.dueTomorrow()));
         }
         // if this week is selected
         else if( index == 2 )
         {
-            Task[] tasks = rtm.getTasks("","list:School AND status:incomplete");
-            Arrays.sort(tasks, new TaskComparator());
-            UiApplication.getUiApplication().pushScreen(new TaskListScreen("School", tasks));
+            //Task[] tasks = rtm.getTasks("","list:School AND status:incomplete");
+            //Arrays.sort(tasks, new TaskComparator());
+            //UiApplication.getUiApplication().pushScreen(new TaskListScreen("School", tasks));
             //UiApplication.getUiApplication().pushScreen(new ThisWeekScreen());
         }
         // if lists are selected
         else if( index == 3 )
         {
-            List[] lists = rtm.getLists();
-            UiApplication.getUiApplication().pushScreen(new ListsScreen(lists));
+            UiApplication.getUiApplication().pushScreen(new ListsScreen(rtm.getLists()));
         }        
         // if tags are selected
         else if( index == 4 )
         {
-            String[] tags = {"tag1", "tag2", "tag3"};
-            UiApplication.getUiApplication().pushScreen(new TagsScreen(tags));
+            UiApplication.getUiApplication().pushScreen(new TagsScreen(rtm.getTags()));
         }
         // if locations are selected
         else if( index == 5 )
         {
-            Location[] locations = rtm.getLocations();
-            UiApplication.getUiApplication().pushScreen(new LocationsScreen(locations));
+            UiApplication.getUiApplication().pushScreen(new LocationsScreen(rtm.getLocations()));
         }
         
         

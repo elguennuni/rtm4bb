@@ -1,5 +1,7 @@
 #summary How to authorize BBRTM to access your account.
 
+*_(NOTE: "API Application" is the generic application name.  I have a request in to get this changed to "BBRTM".)_*
+
 ==Install BBRTM on to your BlackBerry==
 
 [http://rtm4bb.googlecode.com/files/login-01.png]
@@ -23,5 +25,6 @@
 [http://rtm4bb.googlecode.com/files/login-06.png]
 
 ==You can manage BBRTM's access to your account via settings->services tab==
+
 
 [http://rtm4bb.googlecode.com/files/rtm_services.PNG]

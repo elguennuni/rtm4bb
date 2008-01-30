@@ -1,0 +1,23 @@
+#summary How to authorize BBRTM to access your account.
+
+===Install BBRTM on to your BlackBerry===
+
+[http://rtm4bb.googlecode.com/files/login-01.png]
+
+===Launch BBRTM as seen above.===
+
+[http://rtm4bb.googlecode.com/files/login-02.png]
+
+===Your browser will automatically open and direct you to the RTM login page.===
+
+[http://rtm4bb.googlecode.com/files/login-03.png]
+
+[http://rtm4bb.googlecode.com/files/login-04.png]
+
+===Scroll down and enter your user name and password.  Click login.===
+
+[http://rtm4bb.googlecode.com/files/login-05.png]
+
+===BBRTM should be authorized now on your account.===
+
+[http://rtm4bb.googlecode.com/files/login-06.png]

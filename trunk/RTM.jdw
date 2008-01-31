@@ -11,9 +11,10 @@ DependenciesInWorkspace=0
 ]
 [Projects
 BBRTM.jdp
-Clear.jdp
+Clear\Clear.jdp
 ]
 [ReleaseActiveProjects
 BBRTM.jdp
 Clear.jdp
+Clear\Clear.jdp
 ]

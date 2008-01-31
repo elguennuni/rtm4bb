@@ -44,10 +44,12 @@ final public class BBRTM extends UiApplication{
     public BBRTM()
     {
         String token = "";
+        AuthenticationData data = new AuthenticationData();
+
         
         try {
             PersistentObject record = PersistentStore.getPersistentObject(KEY);
-            AuthenticationData data = (AuthenticationData) record.getContents();
+            data = (AuthenticationData) record.getContents();
             if( data == null)
             {
                 data = new AuthenticationData();
@@ -69,7 +71,7 @@ final public class BBRTM extends UiApplication{
             {
                 RTMAPI api = new RTMAPI("968d8045c952707d8d13f5187a93cb9f", "ODg5ZDhlMjkxNGJiYzkxZg==");
                 data.authToken = api.getAuthToken(data.frob);
-                //rtm = new RTM(data.authToken);
+                rtm = new RTM(data.authToken);
                 token = data.authToken;
                 record.setContents(data);
                 record.commit();
@@ -77,25 +79,20 @@ final public class BBRTM extends UiApplication{
             else
             {
                 // set the auth token
-                //rtm = new RTM(data.authToken);
+                rtm = new RTM(data.authToken);
                 token = data.authToken;
             }
+            
+             pushScreen(new HomeScreen(rtm));
         }
         catch(Exception e)
         {
             System.out.println(e.toString());
+            PersistentObject record = PersistentStore.getPersistentObject(KEY);
+            record.setContents(null);
+            record.commit();
+            //System.exit(0);
+            pushScreen(new ErrorScreen("BBRTM", e, data.authToken));
         }
-                   
-           
-           rtm = new RTM(token);
-           
-        
-        pushScreen(new HomeScreen(rtm));
-        
-        //BrowserSession bs = Browser.getDefaultSession();
-        //bs.displayPage("http://emerick.org");
-        
-        
-        
     }
 } 

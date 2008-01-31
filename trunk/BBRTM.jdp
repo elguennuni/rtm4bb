@@ -24,6 +24,7 @@ images\p3.png
 images\rtm.png
 src\org\emerick\rtm\AuthenticationData.java
 src\org\emerick\rtm\BBRTM.java
+src\org\emerick\rtm\ErrorScreen.java
 src\org\emerick\rtm\FontColorField.java
 src\org\emerick\rtm\HomeMenuListField.java
 src\org\emerick\rtm\HomeScreen.java

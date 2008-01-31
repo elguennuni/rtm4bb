@@ -12,7 +12,7 @@ import net.rim.device.api.ui.component.*;
 import net.rim.device.api.ui.container.*;
 import net.rim.device.api.system.Bitmap;
 
-import net.rim.device.api.util.Arrays;
+
 
 /**
  * @author Jason Emerick

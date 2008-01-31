@@ -8,6 +8,7 @@
 package org.emerick.rtm;
 
 import java.util.Vector;
+import net.rim.device.api.util.Arrays;
 
 
 /**
@@ -100,7 +101,7 @@ public class RTM {
         for( int x = 0; x < tasks.size(); ++x)
         {
             Task task = (Task)tasks.elementAt(x);
-            if(task.dueToday())
+            if(task.dueToday() || task.overdue())
             {
                 today.addElement(task);
             }
@@ -108,6 +109,7 @@ public class RTM {
         
         Task[] t = new Task[today.size()];
         today.copyInto(t);
+        Arrays.sort(t, new TaskComparator());
         return t;
     }
     
@@ -117,7 +119,7 @@ public class RTM {
         for( int x = 0; x < tasks.size(); ++x)
         {
             Task task = (Task)tasks.elementAt(x);
-            if(task.dueToday())
+            if(task.dueToday() || task.overdue())
             {
                 count++;
             }
@@ -140,6 +142,7 @@ public class RTM {
         
         Task[] t = new Task[today.size()];
         today.copyInto(t);
+        Arrays.sort(t, new TaskComparator());
         return t;
     }
     

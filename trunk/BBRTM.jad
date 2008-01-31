@@ -7,12 +7,12 @@ RIM-COD-Module-Dependencies: net_rim_cldc,net_rim_bbapi_browser
 RIM-MIDlet-Flags-1: 0
 RIM-COD-Module-Name: BBRTM
 MIDlet-Name: BBRTM
-RIM-COD-Size: 33872
-RIM-COD-Creation-Time: 1201675707
+RIM-COD-Size: 34244
+RIM-COD-Creation-Time: 1201794724
 RIM-MIDlet-Position-1: 1
 MIDlet-1: BBRTM,,
 RIM-COD-URL: BBRTM.cod
 MIDlet-Description: Remember the Milk BlackBerry Application
-RIM-COD-SHA1: 36 27 3b 28 46 d3 28 64 64 1a 46 64 bd 3a ff 96 c7 ab 95 d8
+RIM-COD-SHA1: bd bf 7b a9 7b 47 59 ed 6e 6d a6 ac 49 16 a8 4c ff fb 70 cf
 MicroEdition-Profile: MIDP-2.0
 MIDlet-Vendor: Jason Emerick

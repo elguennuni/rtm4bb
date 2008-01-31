@@ -17,15 +17,14 @@ AutoRestart=0
 Description=Clears the authentication data for BBRTM
 ExcludeFromBuildAll=0
 [Files
-..\cow.png
+AuthenticationData.java
 Clear.java
-Data.java
+ClearScreen.java
 ]
 HaveAlxImports=0
 HaveDefs=0
 HaveImports=0
 [Icons
-..\cow.png
 ]
 [ImplicitRules
 ]

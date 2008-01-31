@@ -5,7 +5,7 @@
  * Confidential and proprietary.
  */
 
-package org.emerick.rtm;
+package org.emerick.clear;
 
 import net.rim.device.api.ui.*;
 import net.rim.device.api.ui.component.*;
@@ -25,8 +25,7 @@ import net.rim.device.api.util.Persistable;
  * 
  */
 public class Clear  extends UiApplication{
-     //org.emerick.rtm.BBRTM
-    private static final long KEY = 0x6f57cce61b297d28L;
+
     
     public static void main(String[] args)
     {
@@ -37,20 +36,6 @@ public class Clear  extends UiApplication{
     
     public Clear() 
     {
-        try {
-            PersistentObject record = PersistentStore.getPersistentObject(KEY);
-            Data data = new Data();
-            data.frob = "";
-            data.authToken = "";
-            record.setContents(null);
-            record.commit();
-        }
-        catch(Exception e)
-        {
-        }
-        finally
-        {
-            System.exit(0);
-        }
+        pushScreen(new ClearScreen());
     }
 } 

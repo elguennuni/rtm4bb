@@ -3,11 +3,11 @@ RIM-COD-Module-Name: Clear
 RIM-COD-Module-Dependencies: net_rim_cldc
 MIDlet-Jar-Size: 3102
 MIDlet-1: ,,
-RIM-COD-Creation-Time: 1201674207
+RIM-COD-Creation-Time: 1201792100
 MIDlet-Jar-URL: Clear.jar
 RIM-COD-URL: Clear.cod
-RIM-COD-SHA1: ce 22 c4 4c 01 32 fc c8 14 ce a5 ad 20 c4 ca ed 8f 47 da 0f
-RIM-COD-Size: 8528
+RIM-COD-SHA1: 6e 03 57 8d b4 03 23 8e f7 90 bf b0 d5 ed 38 79 f4 2d 9c 6f
+RIM-COD-Size: 1724
 MicroEdition-Configuration: CLDC-1.1
 MIDlet-Version: 0.0
 MIDlet-Name: Clear

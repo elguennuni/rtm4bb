@@ -15,7 +15,7 @@ import net.rim.device.api.util.Persistable;
  */
 public class AuthenticationData implements Persistable {
     
-    public String frob;
-    public String authToken;
+    public String frob = "";
+    public String authToken = "";
     
 } 

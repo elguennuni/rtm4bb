@@ -18,11 +18,16 @@ import net.rim.device.api.system.*;
  */
 final class ThisWeekScreen extends MainScreen{
 
-    public ThisWeekScreen() 
+    private RTM rtm;
+    
+    public ThisWeekScreen(RTM rtm) 
     {
         // call the parents constructor
         super();
+        this.rtm = rtm;
+        
         setTitle(new LabelField("BBRTM - This Week", LabelField.USE_ALL_WIDTH | DrawStyle.HCENTER));
+        add( new ThisWeekListField(rtm) );
         
     }
 }

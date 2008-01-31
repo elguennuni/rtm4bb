@@ -18,12 +18,12 @@ import net.rim.device.api.system.*;
  */
 final class TagsScreen extends MainScreen{
 
-    public TagsScreen(String[] tags) 
+    public TagsScreen(RTM rtm) 
     {
         // call the parents constructor
         super();
         setTitle(new LabelField("BBRTM - Tags", LabelField.USE_ALL_WIDTH | DrawStyle.HCENTER));
-        add(new TagListField(tags));
+        add(new TagListField(rtm));
     }
 }
 

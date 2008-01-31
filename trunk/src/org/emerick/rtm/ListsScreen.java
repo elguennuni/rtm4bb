@@ -17,14 +17,14 @@ import net.rim.device.api.system.*;
  * @author Jason Emerick
  */
 final class ListsScreen extends MainScreen{
-
-    public ListsScreen(List[] lists) 
+    
+    public ListsScreen(RTM rtm) 
     {
         // call the parents constructor
         super();
         setTitle(new LabelField("BBRTM - Lists", LabelField.USE_ALL_WIDTH | DrawStyle.HCENTER));   
         
-        add(new ListsListField(lists));
+        add(new ListsListField(rtm));
              
     }
 }

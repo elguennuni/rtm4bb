@@ -46,7 +46,17 @@ final public class BBRTM extends UiApplication{
         String token = "";
         AuthenticationData data = new AuthenticationData();
 
+        /*try {
+            rtm = new RTM("55f3192042f4f72661bf4412df4b5af6962e9010");
+            pushScreen(new HomeScreen(rtm));
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.toString());
+            pushScreen(new ErrorScreen("BBRTM", e, data.authToken));
+        }*/
         
+               
         try {
             PersistentObject record = PersistentStore.getPersistentObject(KEY);
             data = (AuthenticationData) record.getContents();

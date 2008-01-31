@@ -22,16 +22,17 @@ public class TagListField extends ListField implements ListFieldCallback
     private String[] tags;
     private Vector rows;
     private Font font;
+    private RTM rtm;
     
-    public TagListField(String[] tags)
+    public TagListField(RTM rtm)
     {
         super(0);
-        setEmptyString("Hooray, no lists here!", DrawStyle.HCENTER);
+        setEmptyString("Hooray, no tags here!", DrawStyle.HCENTER);
         setCallback(this);
-        
+        this.rtm = rtm;
         font = Font.getDefault();
         
-        this.tags = tags;
+        this.tags = rtm.getTags();
         rows = new Vector();
         
         for(int x = 0; x < tags.length; ++x)
@@ -41,7 +42,7 @@ public class TagListField extends ListField implements ListFieldCallback
             row.add(new LabelField(tags[x], DrawStyle.ELLIPSIS));
             
             // set the number of due items in the given list
-            row.add(new FontColorField("(5)", DrawStyle.ELLIPSIS | Field.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
+            row.add(new FontColorField("(" + rtm.countByTag(tags[x]) + ") ", DrawStyle.ELLIPSIS | Field.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
             
             rows.addElement(row);
         }
@@ -138,8 +139,10 @@ public class TagListField extends ListField implements ListFieldCallback
     }
     
     
-    
- 
-            
-        
+    protected boolean trackwheelClick(int status, int time)
+    {
+        int index = getSelectedIndex();
+        UiApplication.getUiApplication().pushScreen(new TaskListScreen(rtm, tags[index], rtm.getTasksByTag(tags[index])));
+        return true;
+    }
 } 

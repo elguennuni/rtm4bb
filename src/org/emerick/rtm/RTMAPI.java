@@ -329,6 +329,48 @@ public class RTMAPI
         }
     }
     
+    
+    public Settings getSettings() throws RTMException
+    {
+        URLBuilder url = new URLBuilder(secret,false);
+        
+        url.append("api_key", key);
+        
+        url.append("auth_token", authToken);
+        
+        url.append("format", format);
+        
+        url.append("method", "rtm.settings.getList");
+        
+        String result = httpRequest(url.getURL());
+ 
+        
+        try 
+        {
+            JSONObject jsonobject = new JSONObject(result);
+            JSONObject rsp = jsonobject.getJSONObject("rsp");
+            
+            // {"rsp":{"stat":"ok","settings":{"timezone":"America\/New_York","dateformat":"1","timeformat":"0","defaultlist":"","language":""}}}
+            if(rsp.getString("stat").equalsIgnoreCase("ok"))
+            {
+                JSONObject settings = rsp.getJSONObject("settings");
+                
+                
+                return new Settings(settings.getString("timezone"), settings.getString("dateformat"), settings.getString("timeformat"), settings.getString("defaultlist"), settings.getString("language"));
+            }
+            else
+            {
+                JSONObject err = rsp.getJSONObject("err");
+                throw new RTMException(err.getString("code") + " - " + err.getString("msg"));
+            }
+            
+        }
+        catch( JSONException e)
+        {
+            throw new RTMException(e.toString());
+        }
+    }
+    
     public String getTimeline() throws RTMException
     {
        URLBuilder url = new URLBuilder(secret,false);
@@ -367,7 +409,7 @@ public class RTMAPI
     }
         
     
-    public Vector getTasks(String list_id, String filter)
+    public Vector getTasks(String list_id, String filter, int offset)
     {
         Vector tasks = new Vector();
         URLBuilder url = new URLBuilder(secret,false);
@@ -525,7 +567,7 @@ public class RTMAPI
                         
                         JSONObject taskDetails = task.getJSONObject("task");
                         theTask.setTaskID(taskDetails.getString("id"));
-                        theTask.setDue(taskDetails.getString("due"));
+                        theTask.setDue(taskDetails.getString("due"), offset);
                         theTask.setHasDueTime(taskDetails.getString("has_due_time"));
                         theTask.setAdded(taskDetails.getString("added"));
                         theTask.setCompleted(taskDetails.getString("completed"));
@@ -1380,7 +1422,7 @@ public class RTMAPI
         
         JSONObject taskDetails = taskSeries.getJSONObject("task");
         newTask.setTaskID(taskDetails.getString("id"));
-        newTask.setDue(taskDetails.getString("due"));
+        newTask.setDue(taskDetails.getString("due"), 5);
         newTask.setHasDueTime(taskDetails.getString("has_due_time"));
         newTask.setAdded(taskDetails.getString("added"));
         newTask.setCompleted(taskDetails.getString("completed"));

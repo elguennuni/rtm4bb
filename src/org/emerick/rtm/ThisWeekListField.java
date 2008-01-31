@@ -1,5 +1,5 @@
 /*
- * HomeMenuListField.java
+ * ThisWeekListField.java
  *
  *
  * This product uses the Remember The Milk API but is not endorsed or certified by Remember The Milk.
@@ -17,16 +17,16 @@ import net.rim.device.api.system.Bitmap;
 /**
  * @author Jason Emerick
  */
-public class HomeMenuListField extends ListField implements ListFieldCallback
+public class ThisWeekListField extends ListField implements ListFieldCallback
 {
 
     private TableRowManager[] rows;
     private Font font;
     private RTM rtm;
     
-    public HomeMenuListField(RTM rtm)
+    public ThisWeekListField(RTM rtm)
     {
-        super(6);
+        super(2);
         this.rtm = rtm;
         setEmptyString("* No Menu!!! *", DrawStyle.HCENTER);
         setCallback(this);
@@ -40,21 +40,21 @@ public class HomeMenuListField extends ListField implements ListFieldCallback
         // set the menu item name
         rows[0].add(new RichTextField("Today", DrawStyle.ELLIPSIS));
         // set the number of list items if there are any
-        rows[0].add(new FontColorField("(" + rtm.countDueToday() + ") ", DrawStyle.ELLIPSIS | Field.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
+        rows[0].add(new FontColorField("(" + rtm.countDueToday() + ")", DrawStyle.ELLIPSIS | Field.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
         
         // create a table row manager
         rows[1] = new TableRowManager();
         // set the menu item name
         rows[1].add(new RichTextField("Tomorrow", DrawStyle.ELLIPSIS));
         // set the number of list items if there are any
-        rows[1].add(new FontColorField("(" + rtm.countDueTomorrow() + ") ", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
+        rows[1].add(new FontColorField("(" + rtm.countDueTomorrow() + ")", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
         
         // create a table row manager
         rows[2] = new TableRowManager();
         // set the menu item name
         rows[2].add(new RichTextField("This Week", DrawStyle.ELLIPSIS));
         // set the number of list items if there are any
-        rows[2].add(new FontColorField("(" + rtm.countDueThisWeek() + ") ", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
+        rows[2].add(new FontColorField("(18)", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
         
         // create a table row manager
         rows[3] = new TableRowManager();
@@ -148,7 +148,7 @@ public class HomeMenuListField extends ListField implements ListFieldCallback
     // ListFieldCallback Implementation
     public void drawListRow(ListField listField, Graphics g, int index, int y, int width)
     {
-        HomeMenuListField list = (HomeMenuListField) listField;
+        ThisWeekListField list = (ThisWeekListField) listField;
         TableRowManager rowManager = list.rows[index];
         rowManager.drawRow(g, 0, y, width, list.getRowHeight());
     }
@@ -187,22 +187,26 @@ public class HomeMenuListField extends ListField implements ListFieldCallback
         // if this week is selected
         else if( index == 2 )
         {
-            UiApplication.getUiApplication().pushScreen(new ThisWeekScreen(rtm));
+            
         }
         // if lists are selected
         else if( index == 3 )
         {
-            UiApplication.getUiApplication().pushScreen(new ListsScreen(rtm));
+            
         }        
         // if tags are selected
         else if( index == 4 )
         {
-            UiApplication.getUiApplication().pushScreen(new TagsScreen(rtm));
+            
         }
         // if locations are selected
         else if( index == 5 )
         {
-            UiApplication.getUiApplication().pushScreen(new LocationsScreen(rtm));
+            
+        }
+        else if( index == 6 )
+        {
+            
         }
         
         

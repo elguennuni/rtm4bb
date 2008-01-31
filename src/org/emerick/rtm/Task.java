@@ -39,6 +39,7 @@ public class Task
     private String priority;
     private String postponed;
     private String estimate;
+    private Calendar cal;
     
     public Task()
     {
@@ -186,9 +187,15 @@ public class Task
         this.deleted = deleted;
     }
     
-    public void setDue(String due)
+    public void setDue(String due, int offset)
     {
         this.due = due;
+        cal = getCalendar();
+        if( cal != null)
+        {
+            cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + offset);
+        }
+        
     }
     
     public void setEstimate(String estimate)
@@ -274,22 +281,9 @@ public class Task
         }
             
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-
         cal.set(Calendar.YEAR, Integer.parseInt(due.substring(0,4)));
         cal.set(Calendar.MONTH, Integer.parseInt(due.substring(5,7))-1);
-        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(due.substring(8,10)));
-        //int hour = Integer.parseInt(due.substring(11,13));
-        //int ampm = Calendar.AM;
-        //if( hour > 11 )
-        //{
-            // set to PM
-         //   hour-=12;
-         //   ampm = Calendar.PM;
-        //}      
-        //cal.set(Calendar.AM_PM, ampm);
-        //cal.set(Calendar.HOUR, hour);
-        
-        
+        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(due.substring(8,10)));        
         cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(due.substring(11,13)));
         cal.set(Calendar.MINUTE, Integer.parseInt(due.substring(14,16)));
         cal.set(Calendar.SECOND, Integer.parseInt(due.substring(17,19)));
@@ -300,44 +294,33 @@ public class Task
     
     
     public boolean overdue()
-    {
-        Calendar cal = getCalendar();
-        
+    {        
         if( cal == null )
             return false;
-        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) - 5);
         Calendar today = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         today.set(Calendar.HOUR_OF_DAY, today.get(Calendar.HOUR_OF_DAY) - 5);
         Calendar notime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         notime.set(Calendar.HOUR_OF_DAY, notime.get(Calendar.HOUR_OF_DAY) - 5);
-        System.out.println("NOTIME: " + notime.getTime().toString());
         notime.set(Calendar.HOUR_OF_DAY, 0);
         notime.set(Calendar.MINUTE, 0);
         notime.set(Calendar.SECOND, 0);
         notime.set(Calendar.MILLISECOND, 0);
         
-        System.out.println("TASK    : " + name);
-        System.out.println("TASK DUE: " + cal.getTime().toString());
-        
         if( hasDueTime() )
         {
-            System.out.println("TODAY   : " + today.getTime().toString());
             return today.after(cal);
         }
         else
         {
-            System.out.println("TODAY   : " + notime.getTime().toString());
             return notime.after(cal);
         }
     }
     
     public boolean dueToday()
     {
-        Calendar cal = getCalendar();
-        
         if( cal == null )
             return false;
-        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) - 5);
+            
         Calendar today = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         today.set(Calendar.HOUR_OF_DAY, today.get(Calendar.HOUR_OF_DAY) - 5);
         
@@ -346,40 +329,28 @@ public class Task
     
     public boolean dueTomorrow()
     {
-        Calendar cal = getCalendar();
-        
         if( cal == null )
-            return false;
-        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) - 5);    
+            return false; 
         Calendar tomorrow = Calendar.getInstance();
         tomorrow.set(Calendar.HOUR_OF_DAY, tomorrow.get(Calendar.HOUR_OF_DAY) - 5);
         tomorrow.set(Calendar.DAY_OF_MONTH, tomorrow.get(Calendar.DAY_OF_MONTH) + 1);
-
-        System.out.println("TASK    : " + name);
-        System.out.println("TASK DUE: " + cal.getTime().toString());
-        System.out.println("TOMORROW: " + tomorrow.getTime().toString());
 
         return DateTimeUtilities.isSameDate(cal.getTime().getTime(), tomorrow.getTime().getTime(), TimeZone.getTimeZone("UTC"), null);
     }
     
     public boolean dueThisWeek()
     {
-        Calendar cal = getCalendar();
         if( cal == null )
             return false;
+        Calendar oneWeek = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        oneWeek.set(Calendar.HOUR_OF_DAY, oneWeek.get(Calendar.HOUR_OF_DAY) - 5);
+        oneWeek.set(Calendar.HOUR_OF_DAY, 0);
+        oneWeek.set(Calendar.MINUTE, 0);
+        oneWeek.set(Calendar.SECOND, 0);
+        oneWeek.set(Calendar.MILLISECOND, 0);
+        oneWeek.set(Calendar.DAY_OF_MONTH, oneWeek.get(Calendar.DAY_OF_MONTH) + 7);
         
-        for( int x = 0; x < 7; x++)
-        {
-            Calendar test = DateTimeUtilities.getNextDate(5 * DateTimeUtilities.ONEHOUR + x * DateTimeUtilities.ONEDAY); 
-            System.out.println(test.getTime().toString());
-            if(DateTimeUtilities.isSameDate(cal.getTime().getTime(), test.getTime().getTime(), TimeZone.getTimeZone("UTC"), null))
-            {
-                return true;
-            }
-        }
-        
-        
-        return false;
+        return oneWeek.after(cal);
     }
         
     
@@ -390,9 +361,6 @@ public class Task
     
     public String getFormattedDue()
     {
-        Calendar cal = getCalendar();
-        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) - 5);
-        
         if(cal == null)
             return "";
             

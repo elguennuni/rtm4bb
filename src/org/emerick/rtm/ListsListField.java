@@ -22,16 +22,18 @@ public class ListsListField extends ListField implements ListFieldCallback
     private List[] lists;
     private Vector rows;
     private Font font;
+    private RTM rtm;
     
-    public ListsListField(List[] lists)
+    public ListsListField(RTM rtm)
     {
         super(0);
         setEmptyString("Hooray, no lists here!", DrawStyle.HCENTER);
         setCallback(this);
-        
+        this.rtm = rtm;
         font = Font.getDefault();
         
-        this.lists = lists;
+        this.lists = rtm.getLists();
+        
         rows = new Vector();
         
         for(int x = 0; x < lists.length; ++x)
@@ -41,7 +43,7 @@ public class ListsListField extends ListField implements ListFieldCallback
             row.add(new LabelField(lists[x].getName(), DrawStyle.ELLIPSIS));
             
             // set the number of due items in the given list
-            row.add(new FontColorField("(5)", DrawStyle.ELLIPSIS | Field.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
+            row.add(new FontColorField("(" + rtm.countByList(lists[x].getListID()) + ") ", DrawStyle.ELLIPSIS | Field.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
             
             rows.addElement(row);
         }
@@ -137,7 +139,12 @@ public class ListsListField extends ListField implements ListFieldCallback
         return Graphics.getScreenWidth();
     }
     
-    
+    protected boolean trackwheelClick(int status, int time)
+    {
+        int index = getSelectedIndex();
+        UiApplication.getUiApplication().pushScreen(new TaskListScreen(rtm, lists[index].getName(), rtm.getTasksByList(lists[index].getListID())));
+        return true;
+    }
     
  
             

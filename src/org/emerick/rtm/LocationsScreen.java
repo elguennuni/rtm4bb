@@ -18,13 +18,13 @@ import net.rim.device.api.system.*;
  */
 final class LocationsScreen extends MainScreen{
 
-    public LocationsScreen(Location[] locations) 
+    public LocationsScreen(RTM rtm) 
     {
         // call the parents constructor
         super();
         setTitle(new LabelField("BBRTM - Locations", LabelField.USE_ALL_WIDTH | DrawStyle.HCENTER));
         
-        add(new LocationsListField(locations));
+        add(new LocationsListField(rtm));
         
     }
 }

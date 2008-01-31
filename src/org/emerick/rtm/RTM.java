@@ -31,8 +31,10 @@ public class RTM {
         // set the auth token
         api.setAuthToken(authToken);
         
+        Settings settings = api.getSettings();
+        
         // get the tasks, lists, and location
-        tasks = api.getTasks("", "status:incomplete");
+        tasks = api.getTasks("", "status:incomplete", settings.getOffset());
         lists = api.getLists();
         locations = api.getLocations();
         tags = new Vector();
@@ -94,6 +96,16 @@ public class RTM {
         locations.copyInto(l);
         return l;
     }
+    
+    public Task[] getAllTasks()
+    {
+        Task[] t = new Task[tasks.size()];
+        tasks.copyInto(t);
+        Arrays.sort(t, new TaskComparator());
+        return t;
+    }
+        
+    
     public Task[] dueToday()
     {
         Vector today = new Vector();
@@ -146,6 +158,119 @@ public class RTM {
         return t;
     }
     
+    public Task[] getTasksByList(String listid)
+    {
+        Vector listTasks = new Vector();
+        
+        for( int x = 0; x < tasks.size(); ++x)
+        {
+            Task task = (Task)tasks.elementAt(x);
+            if(task.getListID().equals(listid))
+            {
+                listTasks.addElement(task);
+            }
+        }
+        
+        Task[] t = new Task[listTasks.size()];
+        listTasks.copyInto(t);
+        Arrays.sort(t, new TaskComparator());
+        return t;
+    }
+    
+    public Task[] getTasksByLocation(String locationid)
+    {
+        Vector locationTasks = new Vector();
+        
+        for( int x = 0; x < tasks.size(); ++x)
+        {
+            Task task = (Task)tasks.elementAt(x);
+            if(task.getLocationID().equals(locationid))
+            {
+                locationTasks.addElement(task);
+            }
+        }
+        
+        Task[] t = new Task[locationTasks.size()];
+        locationTasks.copyInto(t);
+        Arrays.sort(t, new TaskComparator());
+        return t;
+    }
+    
+    public int countByLocation(String locationid)
+    {
+        int count = 0;
+        
+        for( int x = 0; x < tasks.size(); ++x)
+        {
+            Task task = (Task)tasks.elementAt(x);
+            if(task.getLocationID().equals(locationid))
+            {
+                count++;
+            }
+        }
+        
+        return count;
+    }
+    
+    public int countByList(String listid)
+    {
+        int count = 0;
+        
+        for( int x = 0; x < tasks.size(); ++x)
+        {
+            Task task = (Task)tasks.elementAt(x);
+            if(task.getListID().equals(listid))
+            {
+                count++;
+            }
+        }
+        
+        return count;
+    }
+    
+    public Task[] getTasksByTag(String tag)
+    {
+        Vector tagged = new Vector();
+        
+        for( int x = 0; x < tasks.size(); ++x)
+        {
+            Task task = (Task)tasks.elementAt(x);
+            String[] tags = task.getTags();
+            for( int y = 0; y < tags.length; ++y)
+            {
+                if(tags[y].equals(tag))
+                {
+                    tagged.addElement(task);
+                }
+            }
+        }
+        
+        Task[] t = new Task[tagged.size()];
+        tagged.copyInto(t);
+        Arrays.sort(t, new TaskComparator());
+        return t;
+    }
+    
+    public int countByTag(String tag)
+    {
+        int count = 0;
+        
+        for( int x = 0; x < tasks.size(); ++x)
+        {
+            Task task = (Task)tasks.elementAt(x);
+            String[] tags = task.getTags();
+            for( int y = 0; y < tags.length; ++y)
+            {
+                if(tags[y].equals(tag))
+                {
+                    count++;
+                }
+            }
+        }
+        
+        return count;
+    }
+    
     public int countDueTomorrow()
     {
         int count = 0;
@@ -159,6 +284,21 @@ public class RTM {
         }
         return count;
     }
+    
+    public int countDueThisWeek()
+    {
+        int count = 0;
+        for( int x = 0; x < tasks.size(); ++x)
+        {
+            Task task = (Task)tasks.elementAt(x);
+            if(task.dueThisWeek())
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+        
        
     public String getListName(String id)
     {

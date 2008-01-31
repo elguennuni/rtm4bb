@@ -22,16 +22,17 @@ public class LocationsListField extends ListField implements ListFieldCallback
     private Location[] locations;
     private Vector rows;
     private Font font;
+    private RTM rtm;
     
-    public LocationsListField(Location[] locations)
+    public LocationsListField(RTM rtm)
     {
         super(0);
-        setEmptyString("Hooray, no lists here!", DrawStyle.HCENTER);
+        setEmptyString("Hooray, no locations here!", DrawStyle.HCENTER);
         setCallback(this);
-        
+        this.rtm = rtm;
         font = Font.getDefault();
         
-        this.locations = locations;
+        this.locations = rtm.getLocations();
         rows = new Vector();
         
         for(int x = 0; x < locations.length; ++x)
@@ -41,7 +42,7 @@ public class LocationsListField extends ListField implements ListFieldCallback
             row.add(new LabelField(locations[x].getName(), DrawStyle.ELLIPSIS));
             
             // set the number of due items in the given list
-            row.add(new FontColorField("(5)", DrawStyle.ELLIPSIS | Field.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
+            row.add(new FontColorField("(" + rtm.countByLocation(locations[x].getID()) + ") ", DrawStyle.ELLIPSIS | Field.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
             
             rows.addElement(row);
         }
@@ -137,7 +138,12 @@ public class LocationsListField extends ListField implements ListFieldCallback
         return Graphics.getScreenWidth();
     }
     
-    
+    protected boolean trackwheelClick(int status, int time)
+    {
+        int index = getSelectedIndex();
+        UiApplication.getUiApplication().pushScreen(new TaskListScreen(rtm, locations[index].getName(), rtm.getTasksByLocation(locations[index].getID())));
+        return true;
+    }
     
  
             

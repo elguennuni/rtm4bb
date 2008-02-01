@@ -9,6 +9,7 @@ package org.emerick.rtm;
 
 import java.util.Vector;
 import net.rim.device.api.util.Arrays;
+import java.util.Calendar;
 
 
 /**
@@ -21,7 +22,7 @@ public class RTM {
     Vector lists;
     Vector locations;
     Vector tags;
-    
+    Settings settings;
     
     
     public RTM(String authToken)
@@ -31,7 +32,7 @@ public class RTM {
         // set the auth token
         api.setAuthToken(authToken);
         
-        Settings settings = api.getSettings();
+        settings = api.getSettings();
         
         // get the tasks, lists, and location
         tasks = api.getTasks("", "status:incomplete", settings.getOffset());
@@ -52,6 +53,12 @@ public class RTM {
             }
         }
     }
+    
+    public int getOffset()
+    {
+        return settings.getOffset();
+    }
+    
     
     public String getFrob()
     {
@@ -104,7 +111,45 @@ public class RTM {
         Arrays.sort(t, new TaskComparator());
         return t;
     }
+    
+    public Task[] dueOnDay(int month, int day)
+    {
+        Vector today = new Vector();
         
+        for( int x = 0; x < tasks.size(); ++x)
+        {
+            Task task = (Task)tasks.elementAt(x);
+            Calendar cal = task.getCalendar();
+            
+            if(cal != null && cal.get(Calendar.DAY_OF_MONTH) == day && cal.get(Calendar.MONTH) == month)
+            {
+                today.addElement(task);
+            }
+        }
+        
+        Task[] t = new Task[today.size()];
+        today.copyInto(t);
+        Arrays.sort(t, new TaskComparator());
+        return t;
+    }
+     
+    public int countDueOnDay(int month, int day)
+    {
+        int count = 0;
+        
+        for( int x = 0; x < tasks.size(); ++x)
+        {
+            Task task = (Task)tasks.elementAt(x);
+            Calendar cal = task.getCalendar();
+            
+            if(cal != null && cal.get(Calendar.DAY_OF_MONTH) == day && cal.get(Calendar.MONTH) == month)
+            {
+                count++;
+            }
+        }
+        
+        return count;
+    }
     
     public Task[] dueToday()
     {

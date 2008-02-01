@@ -11,6 +11,10 @@ import net.rim.device.api.ui.*;
 import net.rim.device.api.ui.component.*;
 import net.rim.device.api.ui.container.*;
 import net.rim.device.api.system.Bitmap;
+import java.util.Calendar;
+import java.util.TimeZone;
+import java.util.Date;
+import net.rim.device.api.util.DateTimeUtilities;
 
 
 
@@ -26,12 +30,12 @@ public class ThisWeekListField extends ListField implements ListFieldCallback
     
     public ThisWeekListField(RTM rtm)
     {
-        super(2);
+        super(7);
         this.rtm = rtm;
         setEmptyString("* No Menu!!! *", DrawStyle.HCENTER);
         setCallback(this);
-        setRowHeight(36);
-        rows = new TableRowManager[6];
+        setRowHeight(30);
+        rows = new TableRowManager[7];
         
         font = Font.getDefault();
 
@@ -49,35 +53,86 @@ public class ThisWeekListField extends ListField implements ListFieldCallback
         // set the number of list items if there are any
         rows[1].add(new FontColorField("(" + rtm.countDueTomorrow() + ")", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
         
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + rtm.getOffset());
+        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 2);
+        
         // create a table row manager
         rows[2] = new TableRowManager();
         // set the menu item name
-        rows[2].add(new RichTextField("This Week", DrawStyle.ELLIPSIS));
+        rows[2].add(new RichTextField(getDay(cal.get(Calendar.DAY_OF_WEEK)), DrawStyle.ELLIPSIS));
         // set the number of list items if there are any
-        rows[2].add(new FontColorField("(18)", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
+        rows[2].add(new FontColorField("(" + rtm.countDueOnDay(cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)) + ")", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
+        
+        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
         
         // create a table row manager
         rows[3] = new TableRowManager();
         // set the menu item name
-        rows[3].add(new RichTextField("Lists", DrawStyle.ELLIPSIS));
+        rows[3].add(new RichTextField(getDay(cal.get(Calendar.DAY_OF_WEEK)), DrawStyle.ELLIPSIS));
         // set the number of list items if there are any
-        rows[3].add(new FontColorField("", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
+        rows[3].add(new FontColorField("(" + rtm.countDueOnDay(cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)) + ")", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
+        
+        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
         
         // create a table row manager
         rows[4] = new TableRowManager();
         // set the menu item name
-        rows[4].add(new RichTextField("Tags", DrawStyle.ELLIPSIS));
+        rows[4].add(new RichTextField(getDay(cal.get(Calendar.DAY_OF_WEEK)), DrawStyle.ELLIPSIS));
         // set the number of list items if there are any
-        rows[4].add(new FontColorField("", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
+        rows[4].add(new FontColorField("(" + rtm.countDueOnDay(cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)) + ")", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
+        
+        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
         
         // create a table row manager
         rows[5] = new TableRowManager();
         // set the menu item name
-        rows[5].add(new RichTextField("Locations", DrawStyle.ELLIPSIS));
+        rows[5].add(new RichTextField(getDay(cal.get(Calendar.DAY_OF_WEEK)), DrawStyle.ELLIPSIS));
         // set the number of list items if there are any
-        rows[5].add(new FontColorField("", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
+        rows[5].add(new FontColorField("(" + rtm.countDueOnDay(cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)) + ")", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
         
-    }      
+        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + 1);
+        
+        // create a table row manager
+        rows[6] = new TableRowManager();
+        // set the menu item name
+        rows[6].add(new RichTextField(getDay(cal.get(Calendar.DAY_OF_WEEK)), DrawStyle.ELLIPSIS));
+        // set the number of list items if there are any
+        rows[6].add(new FontColorField("(" + rtm.countDueOnDay(cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)) + ")", DrawStyle.ELLIPSIS | LabelField.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
+        
+    }   
+    
+    private String getDay(int day)
+    {
+        if(day == Calendar.MONDAY)
+        {
+            return "Monday";
+        }
+        else if(day == Calendar.TUESDAY)
+        {
+            return "Tuesday";
+        }
+        else if(day == Calendar.WEDNESDAY)
+        {
+            return "Wednesday";
+        }
+        else if(day == Calendar.THURSDAY)
+        {
+            return "Thursday";
+        }
+        else if(day == Calendar.FRIDAY)
+        {
+            return "Friday";
+        }
+        else if(day == Calendar.SATURDAY)
+        {
+            return "Saturday";
+        }
+        else // if(day == Calendar.SUNDAY)
+        {
+            return "Sunday";
+        }
+    }
     
     private class TableRowManager extends Manager
     {
@@ -120,11 +175,11 @@ public class ThisWeekListField extends ListField implements ListFieldCallback
             
             Field field = getField(0);
             layoutChild(field, preferredWidth - 110, preferredHeight);
-            setPositionChild(field, 35, 12);
+            setPositionChild(field, 10, 6);
             
             field = getField(1);
             layoutChild(field, 75, preferredHeight);
-            setPositionChild(field, preferredWidth-75, 11);
+            setPositionChild(field, preferredWidth-75, 5);
 
             setExtent(preferredWidth, preferredHeight);
         }
@@ -172,6 +227,8 @@ public class ThisWeekListField extends ListField implements ListFieldCallback
     protected boolean trackwheelClick(int status, int time)
     {
         int index = getSelectedIndex();
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) + index);
         
         // if today is selected
         if( index == 0 )
@@ -184,29 +241,9 @@ public class ThisWeekListField extends ListField implements ListFieldCallback
         {
             UiApplication.getUiApplication().pushScreen(new TaskListScreen(rtm, "Tomorrow", rtm.dueTomorrow()));
         }
-        // if this week is selected
-        else if( index == 2 )
+        else 
         {
-            
-        }
-        // if lists are selected
-        else if( index == 3 )
-        {
-            
-        }        
-        // if tags are selected
-        else if( index == 4 )
-        {
-            
-        }
-        // if locations are selected
-        else if( index == 5 )
-        {
-            
-        }
-        else if( index == 6 )
-        {
-            
+            UiApplication.getUiApplication().pushScreen(new TaskListScreen(rtm, getDay(cal.get(Calendar.DAY_OF_WEEK)), rtm.dueOnDay(cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))));
         }
         
         

@@ -190,12 +190,11 @@ public class Task
     public void setDue(String due, int offset)
     {
         this.due = due;
-        cal = getCalendar();
-        if( cal != null)
+        setCalendar();
+        if(cal != null)
         {
             cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + offset);
-        }
-        
+        }  
     }
     
     public void setEstimate(String estimate)
@@ -275,12 +274,17 @@ public class Task
         
     public Calendar getCalendar()
     {
+        return cal;
+    }
+    
+    private Calendar setCalendar()
+    {
         if( due.length() == 0 )
         {
             return null;
         }
             
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, Integer.parseInt(due.substring(0,4)));
         cal.set(Calendar.MONTH, Integer.parseInt(due.substring(5,7))-1);
         cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(due.substring(8,10)));        
@@ -297,10 +301,8 @@ public class Task
     {        
         if( cal == null )
             return false;
-        Calendar today = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        today.set(Calendar.HOUR_OF_DAY, today.get(Calendar.HOUR_OF_DAY) - 5);
-        Calendar notime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        notime.set(Calendar.HOUR_OF_DAY, notime.get(Calendar.HOUR_OF_DAY) - 5);
+        Calendar today = Calendar.getInstance();
+        Calendar notime = Calendar.getInstance();
         notime.set(Calendar.HOUR_OF_DAY, 0);
         notime.set(Calendar.MINUTE, 0);
         notime.set(Calendar.SECOND, 0);
@@ -321,29 +323,27 @@ public class Task
         if( cal == null )
             return false;
             
-        Calendar today = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        today.set(Calendar.HOUR_OF_DAY, today.get(Calendar.HOUR_OF_DAY) - 5);
+        Calendar today = Calendar.getInstance();
         
-        return DateTimeUtilities.isSameDate(cal.getTime().getTime(), today.getTime().getTime(), TimeZone.getTimeZone("GMT"), TimeZone.getTimeZone("GMT"));
+        return (today.get(Calendar.DAY_OF_MONTH) == cal.get(Calendar.DAY_OF_MONTH));
     }
     
     public boolean dueTomorrow()
     {
         if( cal == null )
-            return false; 
+            return false;
+            
         Calendar tomorrow = Calendar.getInstance();
-        tomorrow.set(Calendar.HOUR_OF_DAY, tomorrow.get(Calendar.HOUR_OF_DAY) - 5);
-        tomorrow.set(Calendar.DAY_OF_MONTH, tomorrow.get(Calendar.DAY_OF_MONTH) + 1);
-
-        return DateTimeUtilities.isSameDate(cal.getTime().getTime(), tomorrow.getTime().getTime(), TimeZone.getTimeZone("UTC"), null);
+        tomorrow.set(Calendar.DAY_OF_MONTH, tomorrow.get(Calendar.DAY_OF_MONTH) + 1);        
+        
+        return ((tomorrow.get(Calendar.DAY_OF_MONTH)) == cal.get(Calendar.DAY_OF_MONTH));
     }
     
     public boolean dueThisWeek()
     {
         if( cal == null )
             return false;
-        Calendar oneWeek = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        oneWeek.set(Calendar.HOUR_OF_DAY, oneWeek.get(Calendar.HOUR_OF_DAY) - 5);
+        Calendar oneWeek = Calendar.getInstance();
         oneWeek.set(Calendar.HOUR_OF_DAY, 0);
         oneWeek.set(Calendar.MINUTE, 0);
         oneWeek.set(Calendar.SECOND, 0);
@@ -409,11 +409,61 @@ public class Task
         }
         else
         {
-            format += (cal.get(Calendar.MONTH) + 1);
-            format += "/";
+            int month = cal.get(Calendar.MONTH);
+            if( month == Calendar.JANUARY )
+            {
+                format += "Jan ";
+            }
+            else if( month == Calendar.FEBRUARY )
+            {
+                format += "Feb ";
+            }
+            else if( month == Calendar.MARCH )
+            {
+                format += "Mar ";
+            }
+            else if( month == Calendar.APRIL )
+            {
+                format += "Apr ";
+            }
+            else if( month == Calendar.MAY )
+            {
+                format += "May ";
+            }
+            else if( month == Calendar.JUNE )
+            {
+                format += "Jun ";
+            }
+            else if( month == Calendar.JULY )
+            {
+                format += "Jul ";
+            }
+            else if( month == Calendar.AUGUST )
+            {
+                format += "Aug ";
+            }
+            else if( month == Calendar.SEPTEMBER )
+            {
+                format += "Sep ";
+            }
+            else if( month == Calendar.OCTOBER )
+            {
+                format += "Oct ";
+            }
+            else if( month == Calendar.NOVEMBER )
+            {
+                format += "Nov ";
+            }
+            else // if( month == Calendar.DECEMBER )
+            {
+                format += "Dec ";
+            }
+                    
+            //format += (cal.get(Calendar.MONTH) + 1);
+            //format += "/";
             format += cal.get(Calendar.DAY_OF_MONTH);
-            format += "/";
-            format += cal.get(Calendar.YEAR);
+            //format += "/";
+            //format += cal.get(Calendar.YEAR);
         }            
         
         if(time)

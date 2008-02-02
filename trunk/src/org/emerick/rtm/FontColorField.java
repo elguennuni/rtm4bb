@@ -19,6 +19,8 @@ public class FontColorField extends LabelField
 {
     
     private int color = 0x00000000;
+    private int onFocus = 0x00ffffff;
+    private int current;
     
     public FontColorField(String text, long style, int color)
     {

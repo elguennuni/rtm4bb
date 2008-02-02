@@ -434,9 +434,6 @@ public class RTMAPI
         
         String result = httpRequest(url.getURL());
         
-        System.out.println(result);
-        
-        
         try 
         {
             JSONObject jsonobject = new JSONObject(result);
@@ -565,18 +562,41 @@ public class RTMAPI
                             }
                         }
                         
-                        JSONObject taskDetails = task.getJSONObject("task");
-                        theTask.setTaskID(taskDetails.getString("id"));
-                        theTask.setDue(taskDetails.getString("due"), offset);
-                        theTask.setHasDueTime(taskDetails.getString("has_due_time"));
-                        theTask.setAdded(taskDetails.getString("added"));
-                        theTask.setCompleted(taskDetails.getString("completed"));
-                        theTask.setDeleted(taskDetails.getString("deleted"));
-                        theTask.setPriority(taskDetails.getString("priority"));
-                        theTask.setPostponed(taskDetails.getString("postponed"));
-                        theTask.setEstimate(taskDetails.getString("estimate"));
-                        
-                        tasks.addElement(theTask);
+                        if( ! isJSONArray(task.getString("task")))
+                        {
+                            JSONObject taskDetails = task.getJSONObject("task");
+                            theTask.setTaskID(taskDetails.getString("id"));
+                            theTask.setDue(taskDetails.getString("due"), offset);
+                            theTask.setHasDueTime(taskDetails.getString("has_due_time"));
+                            theTask.setAdded(taskDetails.getString("added"));
+                            theTask.setCompleted(taskDetails.getString("completed"));
+                            theTask.setDeleted(taskDetails.getString("deleted"));
+                            theTask.setPriority(taskDetails.getString("priority"));
+                            theTask.setPostponed(taskDetails.getString("postponed"));
+                            theTask.setEstimate(taskDetails.getString("estimate"));
+                            
+                            tasks.addElement(theTask);
+                        }
+                        else
+                        {
+                            JSONArray taskArray = task.getJSONArray("task");
+                            for(int z = 0; z < taskArray.length(); ++z)
+                            {
+                                JSONObject multiTask = taskArray.getJSONObject(z);
+                                Task taskCopy = new Task(theTask);
+                                taskCopy.setTaskID(multiTask.getString("id"));
+                                taskCopy.setDue(multiTask.getString("due"), offset);
+                                taskCopy.setHasDueTime(multiTask.getString("has_due_time"));
+                                taskCopy.setAdded(multiTask.getString("added"));
+                                taskCopy.setCompleted(multiTask.getString("completed"));
+                                taskCopy.setDeleted(multiTask.getString("deleted"));
+                                taskCopy.setPriority(multiTask.getString("priority"));
+                                taskCopy.setPostponed(multiTask.getString("postponed"));
+                                taskCopy.setEstimate(multiTask.getString("estimate"));
+                                
+                                tasks.addElement(taskCopy);
+                            }
+                        }    
                     }
                 }
                     

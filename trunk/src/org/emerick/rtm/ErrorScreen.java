@@ -25,7 +25,7 @@ final class ErrorScreen extends MainScreen{
         
         setTitle(new LabelField("Error - " + from, LabelField.USE_ALL_WIDTH | DrawStyle.HCENTER));
         
-        add(new LabelField(e.toString(), LabelField.USE_ALL_WIDTH));
+        add(new LabelField(e.toString(), LabelField.USE_ALL_WIDTH | Field.FOCUSABLE));
         add(new SeparatorField());
         add(new LabelField(data, LabelField.USE_ALL_WIDTH | Field.FOCUSABLE));
     }

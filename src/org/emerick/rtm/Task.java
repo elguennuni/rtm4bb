@@ -50,6 +50,32 @@ public class Task
         due = hasduetime = added = completed = deleted = priority = postponed = estimate = "";
     }
     
+    public Task(Task task)
+    {
+        listid = task.listid;
+        taskseriesid = task.taskseriesid;
+        taskid = task.taskid;
+        created = task.created;
+        modified = task.modified;
+        name = task.name;
+        source = task.source;
+        url = task.url;
+        locationid = task.locationid;
+        tags = task.tags;
+        notes = task.notes;
+        participants = task.participants;
+        due = task.due;
+        hasduetime = task.hasduetime;
+        added = task.added;
+        completed = task.completed;
+        deleted = task.deleted;
+        priority = task.priority;
+        postponed = task.postponed;
+        estimate = task.estimate;
+    }
+        
+        
+    
     public Task(String listid)
     {
         this.listid = listid;
@@ -325,7 +351,7 @@ public class Task
             
         Calendar today = Calendar.getInstance();
         
-        return (today.get(Calendar.DAY_OF_MONTH) == cal.get(Calendar.DAY_OF_MONTH));
+        return (today.get(Calendar.DAY_OF_MONTH) == cal.get(Calendar.DAY_OF_MONTH) && today.get(Calendar.MONTH) == cal.get(Calendar.MONTH) && today.get(Calendar.YEAR) == cal.get(Calendar.YEAR));
     }
     
     public boolean dueTomorrow()
@@ -336,7 +362,7 @@ public class Task
         Calendar tomorrow = Calendar.getInstance();
         tomorrow.set(Calendar.DAY_OF_MONTH, tomorrow.get(Calendar.DAY_OF_MONTH) + 1);        
         
-        return ((tomorrow.get(Calendar.DAY_OF_MONTH)) == cal.get(Calendar.DAY_OF_MONTH));
+        return ((tomorrow.get(Calendar.DAY_OF_MONTH)) == cal.get(Calendar.DAY_OF_MONTH) && tomorrow.get(Calendar.MONTH) == cal.get(Calendar.MONTH) && tomorrow.get(Calendar.YEAR) == cal.get(Calendar.YEAR));
     }
     
     public boolean dueThisWeek()
@@ -344,13 +370,18 @@ public class Task
         if( cal == null )
             return false;
         Calendar oneWeek = Calendar.getInstance();
+        //Calendar today = Calendar.getInstance();
         oneWeek.set(Calendar.HOUR_OF_DAY, 0);
         oneWeek.set(Calendar.MINUTE, 0);
         oneWeek.set(Calendar.SECOND, 0);
         oneWeek.set(Calendar.MILLISECOND, 0);
         oneWeek.set(Calendar.DAY_OF_MONTH, oneWeek.get(Calendar.DAY_OF_MONTH) + 7);
+        //today.set(Calendar.HOUR_OF_DAY, 0);
+        //today.set(Calendar.MINUTE, 0);
+        //today.set(Calendar.SECOND, 0);
+        //today.set(Calendar.MILLISECOND, 0);
         
-        return oneWeek.after(cal);
+        return (oneWeek.after(cal)); //&& today.before(cal));
     }
         
     
@@ -375,7 +406,7 @@ public class Task
                 format += "Today";
             }
         }
-        else if(dueThisWeek())
+        else if(dueThisWeek() && !overdue())
         {
             int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
             if( dayofweek == Calendar.MONDAY )

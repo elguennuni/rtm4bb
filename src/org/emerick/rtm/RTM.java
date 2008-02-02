@@ -90,6 +90,7 @@ public class RTM {
         }
         String[] t = new String[tags.size()];
         tags.copyInto(t);
+        Arrays.sort(t,new StringComparator());
         return t;
     }
     
@@ -205,6 +206,20 @@ public class RTM {
     
     public Task[] getTasksByList(String listid)
     {
+        for(int x = 0; x < lists.size(); ++x)
+        {
+            List list = (List)lists.elementAt(x);
+            if(list.getListID().equals(listid) && list.isSmart())
+            {
+                Vector v = api.getTasks(listid, "status:incomplete", settings.getOffset());
+                Task[] t = new Task[v.size()];
+                v.copyInto(t);
+                Arrays.sort(t, new TaskComparator());
+                return t;
+            }
+        }
+                
+        
         Vector listTasks = new Vector();
         
         for( int x = 0; x < tasks.size(); ++x)
@@ -242,7 +257,7 @@ public class RTM {
     }
     
     public int countByLocation(String locationid)
-    {
+    {  
         int count = 0;
         
         for( int x = 0; x < tasks.size(); ++x)
@@ -257,8 +272,17 @@ public class RTM {
         return count;
     }
     
-    public int countByList(String listid)
+    public String countByList(String listid)
     {
+        for(int x = 0; x < lists.size(); ++x)
+        {
+            List list = (List)lists.elementAt(x);
+            if(list.getListID().equals(listid) && list.isSmart())
+            {
+                return "Smart";
+            }
+        }
+        
         int count = 0;
         
         for( int x = 0; x < tasks.size(); ++x)
@@ -270,7 +294,7 @@ public class RTM {
             }
         }
         
-        return count;
+        return Integer.toString(count);
     }
     
     public Task[] getTasksByTag(String tag)

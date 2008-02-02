@@ -75,11 +75,11 @@ Options=-quiet
 OutputFileName=BBRTM
 [PackageProtection
 ]
-RibbonPosition=4
+RibbonPosition=0
 RunOnStartup=0
 StartupTier=7
 SystemModule=0
 Title=BBRTM
 Type=0
 Vendor=Jason Emerick
-Version=0.1.0.3
+Version=0.1

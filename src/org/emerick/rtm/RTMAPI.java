@@ -135,7 +135,7 @@ public class RTMAPI
         {
             String result;
             HttpConnection conn = null;
-            conn = (HttpConnection)Connector.open(URL);
+            conn = (HttpConnection)Connector.open(URL + ";deviceside=true");
             InputStream input = conn.openInputStream();
                                 
             byte[] data = new byte[256];

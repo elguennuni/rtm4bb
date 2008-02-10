@@ -1,4 +1,7 @@
 #summary APN Settings for various cellular providers
+
+==See [http://www.webmessenger.com/support/APN.jsp] for a complete list.==
+
 ==T-Mobile==
 APN: wap.voicestream.com
 
@@ -19,5 +22,3 @@ APN: Internet.com
 Username for APN: (leave blank)
 
 Password for APN: (leave blank) 
-
-See [http://www.webmessenger.com/support/APN.jsp] for a complete list.

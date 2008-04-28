@@ -12,6 +12,7 @@ import net.rim.device.api.ui.component.*;
 import net.rim.device.api.ui.container.*;
 import net.rim.device.api.system.Bitmap;
 import java.util.Vector;
+import net.rim.device.api.util.Arrays;
 
 /**
  * @author Jason Emerick
@@ -35,6 +36,7 @@ public class TaskListField extends ListField implements ListFieldCallback
         
         this.rtm = rtm;
         
+       
         p1 = Bitmap.getBitmapResource("p1.png");
         p2 = Bitmap.getBitmapResource("p2.png");
         p3 = Bitmap.getBitmapResource("p3.png");
@@ -216,7 +218,7 @@ public class TaskListField extends ListField implements ListFieldCallback
     
     protected boolean trackwheelClick(int status, int time)
     {
-        //UiApplication.getUiApplication().pushScreen(new HomeScreen());
+        
         return true;
     }
     
@@ -230,14 +232,26 @@ public class TaskListField extends ListField implements ListFieldCallback
         public void run()
         {
             int[] items = getSelection();
+            final int index = getSelectedIndex();
+            Thread t = new Thread() {
+                public void run()
+                {
+                    rtm.completeTask(tasks[index]);
+                }
+            };
             
-            Dialog.alert("Completing Tasks: " + items.length);
+            t.start();
+            
+            while(t.isAlive());
+            
+            delete(index);
         }
     }
     
     public void delete(int index)
     {
-        
+        Arrays.removeAt(tasks, index);
+        rows.removeElementAt(index);
         super.delete(index);
     }
     

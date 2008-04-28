@@ -40,7 +40,18 @@ public class Settings {
     
     public void setOffset(String timezone)
     {
+        // To use the TimeZone set by the BlackBerry
+        //offset = TimeZone.getDefault().getRawOffset() / 3600000;
+        
+        // To use the TimeZone set in Remember the Milk
         offset = TimeZone.getTimeZone(timezone).getRawOffset() / 3600000;
+        
+        // To account for Daylight Savings Time
+        if( TimeZone.getDefault().useDaylightTime() )
+        {
+            // add 1 to the offset if using DST
+            offset += 1;
+        }
     }
     
     public int getOffset()

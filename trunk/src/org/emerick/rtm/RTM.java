@@ -382,4 +382,11 @@ public class RTM {
         
         return id;
     }
+    
+    public void completeTask(Task task)
+    {
+        api.getTimeline();
+        api.completeTask(task.getListID(), task.getTaskseriesID(), task.getTaskID());
+        tasks.removeElement(task);
+    }
 } 

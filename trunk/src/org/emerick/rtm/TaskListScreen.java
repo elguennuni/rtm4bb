@@ -27,7 +27,7 @@ final class TaskListScreen extends MainScreen{
     public TaskListScreen(RTM rtm, String title, Task[] tasks) 
     {
         // call the parents constructor
-        super(Manager.NO_VERTICAL_SCROLLBAR);
+        super();
         this.rtm = rtm;
         this.tasks = tasks;
         taskListField = new TaskListField(rtm, tasks);
@@ -35,7 +35,8 @@ final class TaskListScreen extends MainScreen{
         listener = new TaskListScreenListener();
         addKeyListener(listener);
 
-        add(new LabelField(title, Field.FIELD_HCENTER));
+        setTitle(new LabelField(title, LabelField.USE_ALL_WIDTH | DrawStyle.HCENTER));
+        //add(new LabelField(title, Field.FIELD_HCENTER));
         add(taskListField);
         add(new SeparatorField());
         
@@ -49,6 +50,8 @@ final class TaskListScreen extends MainScreen{
         {
             System.out.println(e.toString());
         }
+        
+        removeFocus();
         
     }
    

@@ -19,9 +19,8 @@ import java.lang.*;
 import net.rim.device.api.system.PersistentObject;
 import net.rim.device.api.system.PersistentStore;
 import net.rim.device.api.util.Persistable;
-
 import net.rim.blackberry.api.browser.*;
-
+import net.rim.device.api.servicebook.*;
 
 
 /**
@@ -35,7 +34,7 @@ final public class BBRTM extends UiApplication{
     private RTM rtm;
     
     public static void main(String[] args)
-    {
+    {    
        BBRTM bbrtm = new BBRTM();
        
        bbrtm.enterEventDispatcher();
@@ -44,18 +43,7 @@ final public class BBRTM extends UiApplication{
     public BBRTM()
     {
         String token = "";
-        AuthenticationData data = new AuthenticationData();
-
-        /*try {
-            rtm = new RTM("55f3192042f4f72661bf4412df4b5af6962e9010");
-            pushScreen(new HomeScreen(rtm));
-        }
-        catch(Exception e)
-        {
-            System.out.println(e.toString());
-            pushScreen(new ErrorScreen("BBRTM", e, data.authToken));
-        }*/
-        
+        AuthenticationData data = new AuthenticationData();        
                
         try {
             PersistentObject record = PersistentStore.getPersistentObject(KEY);
@@ -97,11 +85,12 @@ final public class BBRTM extends UiApplication{
         }
         catch(Exception e)
         {
-            System.out.println(e.toString());
-            PersistentObject record = PersistentStore.getPersistentObject(KEY);
-            record.setContents(null);
-            record.commit();
-            //System.exit(0);
+            if(! e.getMessage().equals("Out of Coverage"))
+            {
+                PersistentObject record = PersistentStore.getPersistentObject(KEY);
+                record.setContents(null);
+                record.commit();
+            }
             pushScreen(new ErrorScreen("BBRTM", e, data.authToken));
         }
     }

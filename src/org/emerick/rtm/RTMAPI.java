@@ -18,7 +18,9 @@ import java.io.InputStream;
 import java.util.Vector;
 import net.rim.device.api.crypto.MD5Digest;
 import net.rim.device.api.io.Base64InputStream;
-
+//import net.rim.device.api.system.CoverageInfo;
+import net.rim.device.api.servicebook.ServiceBook;
+import net.rim.device.api.servicebook.ServiceRecord;
 
 
 
@@ -35,6 +37,7 @@ public class RTMAPI
     private String authToken;
     private String timeline;
     private Transaction lastTransaction;
+    private String result;
     
     static final private String authURL = "http://www.rememberthemilk.com/services/auth/?";
     static final private String requestURL = "http://api.rememberthemilk.com/services/rest/?";
@@ -130,12 +133,15 @@ public class RTMAPI
     }
     
     private String httpRequest(String URL) throws RTMException
-    {
+    {        
         try 
         {
             String result;
             HttpConnection conn = null;
-            conn = (HttpConnection)Connector.open(URL + ";deviceside=true");
+            //conn = (HttpConnection)Connector.open(URL + ";deviceside=true");
+            //conn = (HttpConnection)Connector.open(URL + ";deviceside=false;ConnectionUID=GPMDSNA01");
+            conn = (HttpConnection)Connector.open(URL + appendConnectionString());
+            
             InputStream input = conn.openInputStream();
                                 
             byte[] data = new byte[256];
@@ -157,6 +163,29 @@ public class RTMAPI
         {
            throw new RTMException("Error making HTTP API Request");
         }
+    }
+    
+    private String appendConnectionString() 
+    {
+        ServiceRecord[] ippprecordArray = ServiceBook.getSB().findRecordsByCid("IPPP");
+        if (ippprecordArray == null) {
+            return ";deviceside=true";
+        }
+
+        int numRecords = ippprecordArray.length;
+        for (int i = 0; i < numRecords; i++) 
+        {
+            ServiceRecord ipppRecord = ippprecordArray[i];
+
+            if (ipppRecord.isValid()) 
+            {
+                if(ipppRecord.getName().equals("IPPP for BIBS"))
+                {
+                    return ";deviceside=false;ConnectionUID=" + ipppRecord.getUid();
+                }
+            }
+        }
+        return ";deviceside=true";
     }
     
     public String getFrob() throws RTMException

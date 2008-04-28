@@ -141,8 +141,13 @@ public class ListsListField extends ListField implements ListFieldCallback
     
     protected boolean trackwheelClick(int status, int time)
     {
-        int index = getSelectedIndex();
-        UiApplication.getUiApplication().pushScreen(new TaskListScreen(rtm, lists[index].getName(), rtm.getTasksByList(lists[index].getListID())));
+        final int index = getSelectedIndex();
+        UiApplication.getUiApplication().invokeAndWait(new Runnable() {
+            public void run()
+            {
+                UiApplication.getUiApplication().pushScreen(new TaskListScreen(rtm, lists[index].getName(), rtm.getTasksByList(lists[index].getListID())));
+            }
+        });
         return true;
     }
     

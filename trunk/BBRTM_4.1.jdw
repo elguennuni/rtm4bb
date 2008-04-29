@@ -1,0 +1,13 @@
+## RIM Java Development Environment
+# RIM Workspace file
+[BuildConfigurations
+Debug
+Release
+]
+[Projects
+BBRTM.jdp
+]
+[ReleaseActiveProjects
+BBRTM.jdp
+BBRTM_4.1
+]

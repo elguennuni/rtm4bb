@@ -167,25 +167,23 @@ public class RTMAPI
     
     private String appendConnectionString() 
     {
-        ServiceRecord[] ippprecordArray = ServiceBook.getSB().findRecordsByCid("IPPP");
-        if (ippprecordArray == null) {
-            return ";deviceside=true";
-        }
-
-        int numRecords = ippprecordArray.length;
-        for (int i = 0; i < numRecords; i++) 
-        {
-            ServiceRecord ipppRecord = ippprecordArray[i];
-
-            if (ipppRecord.isValid()) 
-            {
-                if(ipppRecord.getName().equals("IPPP for BIBS"))
-                {
-                    return ";deviceside=false;ConnectionUID=" + ipppRecord.getUid();
-                }
-            }
-        }
-        return ";deviceside=true";
+    	ServiceBook sb = ServiceBook.getSB();
+		ServiceRecord[] records = sb.findRecordsByCid("IPPP");
+		if(records != null) {
+			for(int i = records.length-1; i >= 0; i--) {
+				ServiceRecord rec = records[i];
+				if(rec.isValid() && !rec.isDisabled()) {
+					if(rec.getEncryptionMode() == ServiceRecord.ENCRYPT_RIM) {
+						//MDS - disabled for now.
+						//return ";deviceside=false";
+					} else {
+						//BIS
+						return ";deviceside=false;ConnectionType=mds-public";
+					}
+				}
+			}
+		} 
+		return ";deviceside=true"; // No IPPP records, fallback to TCP. User will need to enter the APN settings in the Options app.
     }
     
     public String getFrob() throws RTMException

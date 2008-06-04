@@ -21,7 +21,7 @@ final class ErrorScreen extends MainScreen{
     public ErrorScreen(String from, Exception e, String data ) 
     {
         // call the parents constructor
-        super();
+        super(DEFAULT_CLOSE | DEFAULT_MENU);
         
         setTitle(new LabelField("Error - " + from, LabelField.USE_ALL_WIDTH | DrawStyle.HCENTER));
         

@@ -7,9 +7,18 @@
 
 package org.emerick.rtm;
 
-import java.util.Vector;
-import net.rim.device.api.util.Arrays;
 import java.util.Calendar;
+import java.util.Vector;
+
+import net.rim.device.api.util.Arrays;
+
+import org.emerick.rtm.beans.List;
+import org.emerick.rtm.beans.Location;
+import org.emerick.rtm.beans.Settings;
+import org.emerick.rtm.beans.Task;
+import org.emerick.rtm.net.RTMAPI;
+import org.emerick.rtm.util.StringComparator;
+import org.emerick.rtm.util.TaskComparator;
 
 
 /**

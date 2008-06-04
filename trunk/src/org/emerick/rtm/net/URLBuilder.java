@@ -4,14 +4,16 @@
  *  This product uses the Remember The Milk API but is not endorsed or certified by Remember The Milk.
  */
 
-package org.emerick.rtm;
+package org.emerick.rtm.net;
 
 import java.io.IOException;
 import java.util.Vector;
-import java.lang.StringBuffer;
 
 import net.rim.device.api.crypto.MD5Digest;
 import net.rim.device.api.util.Arrays;
+
+import org.emerick.rtm.RTMException;
+import org.emerick.rtm.util.StringComparator;
 
 /**
  * Construct a REST API HTTP GET URL request to RememberTheMilk

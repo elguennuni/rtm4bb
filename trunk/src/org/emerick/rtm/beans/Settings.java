@@ -5,7 +5,7 @@
  * Confidential and proprietary.
  */
 
-package org.emerick.rtm;
+package org.emerick.rtm.beans;
 
 import java.util.TimeZone;
 

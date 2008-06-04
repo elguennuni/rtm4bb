@@ -6,7 +6,7 @@
  * This product uses the Remember The Milk API but is not endorsed or certified by Remember The Milk.
  */
 
-package org.emerick.rtm;
+package org.emerick.rtm.net;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +19,14 @@ import net.rim.device.api.io.Base64InputStream;
 import net.rim.device.api.servicebook.ServiceBook;
 import net.rim.device.api.servicebook.ServiceRecord;
 
+import org.emerick.rtm.RTMException;
+import org.emerick.rtm.beans.List;
+import org.emerick.rtm.beans.Location;
+import org.emerick.rtm.beans.Note;
+import org.emerick.rtm.beans.Settings;
+import org.emerick.rtm.beans.Task;
+import org.emerick.rtm.beans.Transaction;
+import org.emerick.rtm.beans.User;
 import org.json.me.JSONArray;
 import org.json.me.JSONException;
 import org.json.me.JSONObject;

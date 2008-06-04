@@ -23,7 +23,7 @@ final class HomeScreen extends MainScreen{
     public HomeScreen(RTM rtm ) 
     {
         // call the parents constructor
-        super();
+        super(DEFAULT_CLOSE | DEFAULT_MENU);
         
         this.rtm = rtm;
         

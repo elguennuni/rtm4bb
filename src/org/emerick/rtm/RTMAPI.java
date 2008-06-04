@@ -9,18 +9,19 @@
 package org.emerick.rtm;
 
 import java.io.IOException;
-import org.json.me.JSONObject;
-import org.json.me.JSONArray;
-import org.json.me.JSONException;
-import javax.microedition.io.Connector;
-import javax.microedition.io.HttpConnection;
 import java.io.InputStream;
 import java.util.Vector;
-import net.rim.device.api.crypto.MD5Digest;
+
+import javax.microedition.io.Connector;
+import javax.microedition.io.HttpConnection;
+
 import net.rim.device.api.io.Base64InputStream;
-//import net.rim.device.api.system.CoverageInfo;
 import net.rim.device.api.servicebook.ServiceBook;
 import net.rim.device.api.servicebook.ServiceRecord;
+
+import org.json.me.JSONArray;
+import org.json.me.JSONException;
+import org.json.me.JSONObject;
 
 
 
@@ -37,12 +38,6 @@ public class RTMAPI
     private String authToken;
     private String timeline;
     private Transaction lastTransaction;
-    private String result;
-    
-    static final private String authURL = "http://www.rememberthemilk.com/services/auth/?";
-    static final private String requestURL = "http://api.rememberthemilk.com/services/rest/?";
-     private static final char[] hexChars ={'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'}; 
-    
     
     public RTMAPI(String key, String secret)
     {
@@ -55,84 +50,20 @@ public class RTMAPI
         }
         format = "json";
         authToken = "";
-        timeline = "";
         lastTransaction = null;
     }
     
-    private boolean isJSONArray(String str)
+    private static boolean isJSONArray(String str)
     {
         return (str.startsWith("[") && str.endsWith("]"));
     }
     
-    private boolean isEmpty(String str)
+    private static boolean isEmpty(String str)
     {
         return (str.equals("[]"));
     }
     
-    private String URLEncode(String url)
-    {
-        String rv = "";
-        int beginindex = 0;
-        int endindex = url.indexOf(' ');
-        
-        while (endindex != -1)
-        {
-            rv += url.substring(beginindex, endindex);
-            rv += "%20";
-            beginindex = endindex + 1;
-            endindex = url.indexOf(' ', beginindex);
-        }
-        
-        rv += url.substring(beginindex);
-        
-        return rv;       
-    }
-    
-    private String hexStringFromBytes(byte[] b)
-    {
-    
-        String hex = "";
-        
-        int msb;
-        
-        int lsb = 0;
-        int i;
-        
-        // MSB maps to idx 0
-        
-        for (i = 0; i < b.length; i++)
-        {
-            msb = ((int)b[i] & 0x000000FF) / 16;
-        
-            lsb = ((int)b[i] & 0x000000FF) % 16;
-            hex = hex + hexChars[msb] + hexChars[lsb];
-        }
-        return(hex);
-    } 
-    
-    private String md5(String str) throws RTMException
-    {
-        try
-        {
-            MD5Digest md5 = new MD5Digest();
-        
-            md5.update(str.getBytes("UTF-8"), 0,str.getBytes("UTF-8").length );
-            
-            byte[] buffer = new byte[md5.getDigestLength()];
-                   
-            md5.getDigest(buffer, 0, true);
-            
-            String hash = hexStringFromBytes(buffer);
-            
-            return hash;
-        }
-        catch(IOException e)
-        {
-            throw new RTMException("Error Signing API Request");
-        }
-    }
-    
-    private String httpRequest(String URL) throws RTMException
+    private static String httpRequest(String URL) throws RTMException
     {        
         try 
         {
@@ -165,7 +96,7 @@ public class RTMAPI
         }
     }
     
-    private String appendConnectionString() 
+    private static String appendConnectionString() 
     {
     	ServiceBook sb = ServiceBook.getSB();
 		ServiceRecord[] records = sb.findRecordsByCid("IPPP");
@@ -186,17 +117,21 @@ public class RTMAPI
 		return ";deviceside=true"; // No IPPP records, fallback to TCP. User will need to enter the APN settings in the Options app.
     }
     
+    private URLBuilder createURLRequestForMethod(String method) {
+    	URLBuilder url = new URLBuilder(secret,false);
+        url.append("api_key", key);
+        url.append("format", format);
+        url.append("method", method);
+        if(timeline != null) {
+        	url.append("timeline", timeline);
+        }
+        return url;
+    }
     public String getFrob() throws RTMException
     {
         try
         {
-            URLBuilder url = new URLBuilder(secret,false);
-        
-            url.append("api_key", key);
-
-            url.append("format", format);
-            
-            url.append("method", "rtm.auth.getFrob"); 
+            URLBuilder url = createURLRequestForMethod("rtm.auth.getFrob"); 
             
             String result = httpRequest(url.getURL());
         
@@ -237,13 +172,7 @@ public class RTMAPI
     
     public String getAuthToken(String frob) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret,false);
-        
-        url.append("api_key", key);
-        
-        url.append("format", format);
-        
-        url.append("method", "rtm.auth.getToken");
+        URLBuilder url = createURLRequestForMethod("rtm.auth.getToken");
         
         url.append("frob", frob);
         
@@ -282,15 +211,7 @@ public class RTMAPI
     
     public boolean isAuthorized() throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret,false);
-        
-        url.append("api_key", key);
-        
-        url.append("auth_token", authToken);
-        
-        url.append("format", format);
-        
-        url.append("method", "rtm.auth.checkToken");
+        URLBuilder url = createURLRequestForMethod("rtm.auth.checkToken");
         
         String result = httpRequest(url.getURL());
         
@@ -319,15 +240,7 @@ public class RTMAPI
     
     public User getUser() throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret,false);
-        
-        url.append("api_key", key);
-        
-        url.append("auth_token", authToken);
-        
-        url.append("format", format);
-        
-        url.append("method", "rtm.auth.checkToken");
+        URLBuilder url = createURLRequestForMethod("rtm.auth.checkToken");
         
         String result = httpRequest(url.getURL());
         
@@ -359,15 +272,7 @@ public class RTMAPI
     
     public Settings getSettings() throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret,false);
-        
-        url.append("api_key", key);
-        
-        url.append("auth_token", authToken);
-        
-        url.append("format", format);
-        
-        url.append("method", "rtm.settings.getList");
+        URLBuilder url = createURLRequestForMethod("rtm.settings.getList");
         
         String result = httpRequest(url.getURL());
  
@@ -400,15 +305,7 @@ public class RTMAPI
     
     public String getTimeline() throws RTMException
     {
-       URLBuilder url = new URLBuilder(secret,false);
-        
-        url.append("api_key", key);
-        
-        url.append("auth_token", authToken);
-        
-        url.append("format", format);
-        
-        url.append("method", "rtm.timelines.create");
+       URLBuilder url = createURLRequestForMethod("rtm.timelines.create");
         
         String result = httpRequest(url.getURL());
         
@@ -439,26 +336,16 @@ public class RTMAPI
     public Vector getTasks(String list_id, String filter, int offset)
     {
         Vector tasks = new Vector();
-        URLBuilder url = new URLBuilder(secret,false);
-        
-        url.append("api_key", key);
-        
-        url.append("auth_token", authToken);
-
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.getList");
         if(filter.length() > 0)
         {
             url.append("filter", filter);
         }
-        
-        url.append("format", format);
-        
         if(list_id.length() > 0)
         {
             url.append("list_id", list_id);
         }
-        
-        url.append("method", "rtm.tasks.getList");
-        
+
         String result = httpRequest(url.getURL());
         
         try 
@@ -647,15 +534,7 @@ public class RTMAPI
     public Vector getLists() throws RTMException
     {
         Vector listsVector = new Vector();
-        URLBuilder url = new URLBuilder(secret,false);
-        
-        url.append("api_key", key);
-        
-        url.append("auth_token", authToken);
-        
-        url.append("format", format);
-        
-        url.append("method", "rtm.lists.getList");
+        URLBuilder url = createURLRequestForMethod("rtm.lists.getList");
         
         String result = httpRequest(url.getURL());
         
@@ -704,20 +583,10 @@ public class RTMAPI
     
     public List deleteList(String listid) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret,false);
-        
-        url.append("api_key", key);
-        
-        url.append("auth_token", authToken);
-        
-        url.append("format", format);
-        
-        url.append("method", "rtm.lists.delete");
+        URLBuilder url = createURLRequestForMethod("rtm.lists.delete");
         
         url.append("list_id", listid);
         
-        url.append("timeline", timeline);
-             
         String result = httpRequest(url.getURL());
         
         try 
@@ -756,19 +625,8 @@ public class RTMAPI
     
     public List archiveList(String listid) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret,false);
-        
-        url.append("api_key", key);
-        
-        url.append("auth_token", authToken);
-        
-        url.append("format", format);
-        
-        url.append("method", "rtm.lists.archive");
-        
+        URLBuilder url = createURLRequestForMethod("rtm.lists.archive");
         url.append("list_id", listid);
-        
-        url.append("timeline", timeline);     
        
         String result = httpRequest(url.getURL());
         
@@ -813,18 +671,7 @@ public class RTMAPI
             return false;
         }
         
-        URLBuilder url = new URLBuilder(secret,false);
-        
-        url.append("api_key", key);
-        
-        url.append("auth_token", authToken);
-        
-        url.append("format", format);
-        
-        url.append("method", "rtm.lists.undo");
-        
-        url.append("timeline", timeline);
-
+        URLBuilder url = createURLRequestForMethod("rtm.lists.undo");
         url.append("transaction_id", lastTransaction.getID());
 
         String result = httpRequest(url.getURL());
@@ -852,19 +699,8 @@ public class RTMAPI
     
     public List unarchiveList(String listid) throws RTMException
     {
-       URLBuilder url = new URLBuilder(secret,false);
-        
-        url.append("api_key", key);
-        
-        url.append("auth_token", authToken);
-        
-        url.append("format", format);
-        
-        url.append("method", "rtm.lists.unarchive");
-        
+    	URLBuilder url = createURLRequestForMethod("rtm.lists.unarchive");
         url.append("list_id", listid);
-        
-        url.append("timeline", timeline);
         
         String result = httpRequest(url.getURL());
         
@@ -905,15 +741,7 @@ public class RTMAPI
     public List setListName(String listid, String name) throws RTMException
     {
        
-        URLBuilder url = new URLBuilder(secret,false);
-        
-        url.append("api_key", key);
-        
-        url.append("auth_token", authToken);
-        
-        url.append("format", format);
-        
-        url.append("method", "rtm.lists.setName");
+        URLBuilder url = createURLRequestForMethod("rtm.lists.setName");
         
         url.append("list_id", listid);
         
@@ -960,24 +788,14 @@ public class RTMAPI
     public List addList(String name, String filter) throws RTMException
     {
        
-        URLBuilder url = new URLBuilder(secret,false);
-        
-        url.append("api_key", key);
-        
-        url.append("auth_token", authToken);
-        
+        URLBuilder url = createURLRequestForMethod("rtm.lists.add");
         if( ! filter.equals("") )
         {
             url.append("filter", filter);
         }
-        
-        url.append("format", format);
-
-        url.append("method", "rtm.lists.add");
-
         url.append("name", name);
         
-        url.append("timeline", timeline);
+        
         
         String result = httpRequest(url.getURL());
         
@@ -1017,13 +835,8 @@ public class RTMAPI
     
     public Task addTask(String listid, String name) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.add");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.add");
+
         url.append("list_id", listid);
         url.append("name", name);
         url.append("parse", "1");
@@ -1060,13 +873,8 @@ public class RTMAPI
     
     public Task addTags(String list_id, String taskseries_id, String task_id, String addtags) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.addTags");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.addTags");
+
         url.append("list_id", list_id);
         url.append("taskseries_id", taskseries_id);
         url.append("task_id", task_id);
@@ -1104,13 +912,7 @@ public class RTMAPI
     
     public Task removeTags(String list_id, String taskseries_id, String task_id, String removetags) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.removeTags");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.removeTags");
         url.append("list_id", list_id);
         url.append("taskseries_id", taskseries_id);
         url.append("task_id", task_id);
@@ -1148,13 +950,7 @@ public class RTMAPI
     
     public Task completeTask(String list_id, String taskseries_id, String task_id) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.complete");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.complete");
         url.append("list_id", list_id);
         url.append("taskseries_id", taskseries_id);
         url.append("task_id", task_id);
@@ -1190,13 +986,7 @@ public class RTMAPI
     
     public Task uncompleteTask(String list_id, String taskseries_id, String task_id) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.uncomplete");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.uncomplete");
         url.append("list_id", list_id);
         url.append("taskseries_id", taskseries_id);
         url.append("task_id", task_id);
@@ -1232,13 +1022,7 @@ public class RTMAPI
     
     public Task deleteTask(String list_id, String taskseries_id, String task_id) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.delete");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.delete");
         url.append("list_id", list_id);
         url.append("taskseries_id", taskseries_id);
         url.append("task_id", task_id);
@@ -1274,13 +1058,7 @@ public class RTMAPI
     
     public Task moveTaskPriority(String list_id, String taskseries_id, String task_id, String direction) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.movePriority");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.movePriority");
         url.append("list_id", list_id);
         url.append("taskseries_id", taskseries_id);
         url.append("task_id", task_id);
@@ -1317,13 +1095,7 @@ public class RTMAPI
     
     public Task moveTask(String from_list_id, String to_list_id, String taskseries_id, String task_id) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.moveTo");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.moveTo");
         url.append("from_list_id", from_list_id);
         url.append("taskseries_id", taskseries_id);
         url.append("task_id", task_id);
@@ -1360,13 +1132,7 @@ public class RTMAPI
     
     public Task postponeTask(String list_id, String taskseries_id, String task_id) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.postpone");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.postpone");
         url.append("list_id", list_id);
         url.append("taskseries_id", taskseries_id);
         url.append("task_id", task_id);
@@ -1400,7 +1166,7 @@ public class RTMAPI
         }
     }
     
-    private Task parseJSONTask(JSONObject list) throws JSONException
+    private static Task parseJSONTask(JSONObject list) throws JSONException
     {
         Task newTask = new Task();
         newTask.setListID(list.getString("id"));
@@ -1533,13 +1299,8 @@ public class RTMAPI
     
     public Task setTaskEstimate(String list_id, String taskseries_id, String task_id, String estimate) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.setEstimate");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.setEstimate");
+
         url.append("list_id", list_id);
         url.append("taskseries_id", taskseries_id);
         url.append("task_id", task_id);
@@ -1580,13 +1341,8 @@ public class RTMAPI
     
     public Task setTaskLocation(String list_id, String taskseries_id, String task_id, String location_id) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.setLocation");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.setLocation");
+
         url.append("list_id", list_id);
         url.append("taskseries_id", taskseries_id);
         url.append("task_id", task_id);
@@ -1626,13 +1382,7 @@ public class RTMAPI
     
     public Task setTaskName(String list_id, String taskseries_id, String task_id, String name) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.setName");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.setName");
         url.append("list_id", list_id);
         url.append("taskseries_id", taskseries_id);
         url.append("task_id", task_id);
@@ -1670,13 +1420,7 @@ public class RTMAPI
     
     public Task setTaskPriority(String list_id, String taskseries_id, String task_id, String priority) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.setPriority");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.setPriority");
         url.append("list_id", list_id);
         url.append("taskseries_id", taskseries_id);
         url.append("task_id", task_id);
@@ -1716,13 +1460,7 @@ public class RTMAPI
     
     public Task setTaskRecurrence(String list_id, String taskseries_id, String task_id, String recurrence) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.setRecurrence");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.setRecurrence");
         url.append("list_id", list_id);
         url.append("taskseries_id", taskseries_id);
         url.append("task_id", task_id);
@@ -1762,13 +1500,7 @@ public class RTMAPI
     
     public Task setTaskTags(String list_id, String taskseries_id, String task_id, String tags) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.setTags");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.setTags");
         url.append("list_id", list_id);
         url.append("taskseries_id", taskseries_id);
         url.append("task_id", task_id);
@@ -1808,13 +1540,8 @@ public class RTMAPI
     
     public Task setTaskURL(String list_id, String taskseries_id, String task_id, String URL) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.setURL");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.setURL");
+
         url.append("list_id", list_id);
         url.append("taskseries_id", taskseries_id);
         url.append("task_id", task_id);
@@ -1854,13 +1581,7 @@ public class RTMAPI
     
     public Note addNote(String list_id, String taskseries_id, String task_id, String title, String note_text) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.notes.add");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.notes.add");
         url.append("list_id", list_id);
         url.append("taskseries_id", taskseries_id);
         url.append("task_id", task_id);
@@ -1898,13 +1619,7 @@ public class RTMAPI
     
     public boolean deleteNote(String note_id) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.notes.delete");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.notes.delete");
         url.append("note_id", note_id);
         
         String result = httpRequest(url.getURL());
@@ -1939,13 +1654,8 @@ public class RTMAPI
     
     public Note editNote(String note_id, String title, String note_text) throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.tasks.notes.edit");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
-        url.append("timeline", timeline);
+        URLBuilder url = createURLRequestForMethod("rtm.tasks.notes.edit");
+
         url.append("note_id", note_id);
         url.append("note_title", title);
         url.append("note_text", note_text);
@@ -1983,12 +1693,8 @@ public class RTMAPI
     
     public Vector getLocations() throws RTMException
     {
-        URLBuilder url = new URLBuilder(secret, false);
-        
-        url.append("method", "rtm.locations.getList");
-        url.append("api_key", key);
-        url.append("auth_token", authToken);
-        url.append("format", format);
+        URLBuilder url = createURLRequestForMethod("rtm.locations.getList");
+
         
         String result = httpRequest(url.getURL());
         

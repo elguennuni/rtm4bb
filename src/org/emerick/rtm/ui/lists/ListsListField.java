@@ -1,48 +1,60 @@
 /*
- * LocationsListField.java
+ * ListsListField.java
  *
  *
  * This product uses the Remember The Milk API but is not endorsed or certified by Remember The Milk.
  */
 
-package org.emerick.rtm;
+package org.emerick.rtm.ui.lists;
 
-import net.rim.device.api.ui.*;
-import net.rim.device.api.ui.component.*;
-import net.rim.device.api.ui.container.*;
-import net.rim.device.api.system.Bitmap;
 import java.util.Vector;
+
+import net.rim.device.api.ui.DrawStyle;
+import net.rim.device.api.ui.Field;
+import net.rim.device.api.ui.Font;
+import net.rim.device.api.ui.Graphics;
+import net.rim.device.api.ui.Manager;
+import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.component.ListField;
+import net.rim.device.api.ui.component.ListFieldCallback;
+
+import org.emerick.rtm.RTM;
+import org.emerick.rtm.beans.List;
+import org.emerick.rtm.ui.field.FontColorField;
+import org.emerick.rtm.ui.screens.TaskListScreen;
 
 /**
  * @author Jason Emerick
  */
-public class LocationsListField extends ListField implements ListFieldCallback
+public class ListsListField extends ListField implements ListFieldCallback
 {
     
-    private Location[] locations;
+    private List[] lists;
     private Vector rows;
     private Font font;
     private RTM rtm;
     
-    public LocationsListField(RTM rtm)
+    public ListsListField(RTM rtm)
     {
         super(0);
-        setEmptyString("Hooray, no locations here!", DrawStyle.HCENTER);
+        setEmptyString("Hooray, no lists here!", DrawStyle.HCENTER);
         setCallback(this);
         this.rtm = rtm;
         font = Font.getDefault();
         
-        this.locations = rtm.getLocations();
+        this.lists = rtm.getLists();
+        
         rows = new Vector();
         
-        for(int x = 0; x < locations.length; ++x)
+        for(int x = 0; x < lists.length; ++x)
         {
             TableRowManager row = new TableRowManager();
             // set the list name
-            row.add(new LabelField(locations[x].getName(), DrawStyle.ELLIPSIS));
+            row.add(new LabelField(lists[x].getName(), DrawStyle.ELLIPSIS));
             
             // set the number of due items in the given list
-            row.add(new FontColorField("(" + rtm.countByLocation(locations[x].getID()) + ") ", DrawStyle.ELLIPSIS | Field.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
+            row.add(new FontColorField("(" + rtm.countByList(lists[x].getListID()) + ") ", DrawStyle.ELLIPSIS | Field.USE_ALL_WIDTH | DrawStyle.RIGHT, 0x00878787, font));
             
             rows.addElement(row);
         }
@@ -81,7 +93,7 @@ public class LocationsListField extends ListField implements ListFieldCallback
             g.popContext();
         }
         
-        // Arrages this manager's controlled fields from left to right within
+        // Arranges this manager's controlled fields from left to right within
         // the enclosing table's columns.
         protected void sublayout(int width, int height)
         {
@@ -118,14 +130,14 @@ public class LocationsListField extends ListField implements ListFieldCallback
     // ListFieldCallback Implementation
     public void drawListRow(ListField listField, Graphics g, int index, int y, int width)
     {
-        LocationsListField list = (LocationsListField) listField;
+        ListsListField list = (ListsListField) listField;
         TableRowManager rowManager = (TableRowManager)list.rows.elementAt(index);
         rowManager.drawRow(g, 0, y, width, list.getRowHeight());
     }
     
     public Object get(ListField list, int index)
     {
-        return locations[index];
+        return lists[index];
     }
     
     public int indexOfList(ListField list, String p, int s)
@@ -140,8 +152,13 @@ public class LocationsListField extends ListField implements ListFieldCallback
     
     protected boolean trackwheelClick(int status, int time)
     {
-        int index = getSelectedIndex();
-        UiApplication.getUiApplication().pushScreen(new TaskListScreen(rtm, locations[index].getName(), rtm.getTasksByLocation(locations[index].getID())));
+        final int index = getSelectedIndex();
+        UiApplication.getUiApplication().invokeAndWait(new Runnable() {
+            public void run()
+            {
+                UiApplication.getUiApplication().pushScreen(new TaskListScreen(rtm, lists[index].getName(), rtm.getTasksByList(lists[index].getListID())));
+            }
+        });
         return true;
     }
     

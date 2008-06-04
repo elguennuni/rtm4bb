@@ -4,9 +4,11 @@
  * This product uses the Remember The Milk API but is not endorsed or certified by Remember The Milk.
  */
 
-package org.emerick.rtm;
+package org.emerick.rtm.util;
 
 import net.rim.device.api.util.Comparator;
+
+import org.emerick.rtm.beans.Task;
 
 
 /**

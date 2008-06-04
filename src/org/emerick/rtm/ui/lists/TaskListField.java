@@ -5,14 +5,29 @@
  * This product uses the Remember The Milk API but is not endorsed or certified by Remember The Milk.
  */
 
-package org.emerick.rtm;
+package org.emerick.rtm.ui.lists;
 
-import net.rim.device.api.ui.*;
-import net.rim.device.api.ui.component.*;
-import net.rim.device.api.ui.container.*;
-import net.rim.device.api.system.Bitmap;
 import java.util.Vector;
+
+import net.rim.device.api.system.Bitmap;
+import net.rim.device.api.ui.ContextMenu;
+import net.rim.device.api.ui.DrawStyle;
+import net.rim.device.api.ui.Field;
+import net.rim.device.api.ui.Font;
+import net.rim.device.api.ui.Graphics;
+import net.rim.device.api.ui.Manager;
+import net.rim.device.api.ui.MenuItem;
+import net.rim.device.api.ui.component.BitmapField;
+import net.rim.device.api.ui.component.Dialog;
+import net.rim.device.api.ui.component.LabelField;
+import net.rim.device.api.ui.component.ListField;
+import net.rim.device.api.ui.component.ListFieldCallback;
+import net.rim.device.api.ui.component.NullField;
 import net.rim.device.api.util.Arrays;
+
+import org.emerick.rtm.RTM;
+import org.emerick.rtm.beans.Task;
+import org.emerick.rtm.ui.field.FontColorField;
 
 /**
  * @author Jason Emerick

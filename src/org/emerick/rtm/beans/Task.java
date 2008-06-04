@@ -4,14 +4,11 @@
  * This product uses the Remember The Milk API but is not endorsed or certified by Remember The Milk.
  */
 
-package org.emerick.rtm;
+package org.emerick.rtm.beans;
 
 
-import java.util.Vector;
 import java.util.Calendar;
-import java.util.TimeZone;
-import java.util.Date;
-import net.rim.device.api.util.DateTimeUtilities;
+import java.util.Vector;
 
 /**
  * 
